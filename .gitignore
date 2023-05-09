@@ -8,6 +8,8 @@
 .buildlog/
 .history
 .svn/
+.fvm/
+*.g.dart
 migrate_working_dir/
 
 # IntelliJ related

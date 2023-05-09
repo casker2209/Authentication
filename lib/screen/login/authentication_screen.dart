@@ -37,7 +37,7 @@ class AuthenticationScreen extends StatelessWidget {
                     "Smart Message",
                     textAlign: TextAlign.center,
                     style: UtilsTextStyle.primaryTextStyle(
-                        color: UtilsColor.colorGreenPrimary),
+                        color: UtilsColor.colorGreenPrimary,fontWeight: FontWeight.bold),
                   ),
                 ),
                 SizedBox(height: 85),
@@ -56,6 +56,7 @@ class AuthenticationScreen extends StatelessWidget {
                   textAlign: TextAlign.start,
                   style: UtilsTextStyle.primaryTextStyle(
                     color: UtilsColor.colorGreenPrimary,
+                    fontWeight: FontWeight.w500,
                     size: 19,
                   ),
                 ),
@@ -107,28 +108,36 @@ class AuthenticationForm extends StatelessWidget {
             onChanged: (text) {
               BlocProvider.of<AuthenticationBloc>(context).add(UsernameChanged(text));
             },
+            style: UtilsTextStyle.primaryTextStyle(color: Colors.black,size: 14),
             decoration: InputDecoration(
+                hintText: "Số điện thoại",
+                hintStyle: UtilsTextStyle.primaryTextStyle(color: UtilsColor.colorLightGrey,size: 14),
                 fillColor: UtilsColor.colorLightGrey,
                 filled: true,
                 contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(18),
+                  borderRadius: BorderRadius.circular(30),
                   borderSide: const BorderSide(style: BorderStyle.none,width: 0),
 
                 )),
           ),
           const SizedBox(height: 24),
           TextFormField(
-              obscureText: !state.showPassword,
+
+            obscureText: !state.showPassword,
               onChanged: (text) {
                 BlocProvider.of<AuthenticationBloc>(context).add(PasswordChanged(text));
               },
+            style: UtilsTextStyle.primaryTextStyle(color: Colors.black,size: 14),
             decoration: InputDecoration(
+                isDense: true,
+                hintText: "Mật khẩu",
+                hintStyle: UtilsTextStyle.primaryTextStyle(color: UtilsColor.colorLightGrey,size: 14),
                 fillColor: UtilsColor.colorLightGrey,
                 filled: true,
                 contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
 
                 suffixIcon: IconButton(
                   icon: Icon(!state.showPassword
@@ -141,26 +150,40 @@ class AuthenticationForm extends StatelessWidget {
                 ),
                 border: OutlineInputBorder(
                     borderSide: const BorderSide(style: BorderStyle.none,width: 0),
-                    borderRadius: BorderRadius.circular(18)
+                    borderRadius: BorderRadius.circular(30)
                 )),
           ),
           const SizedBox(height: 18),
-
-              CheckboxListTile(
+    Theme(
+    data: Theme.of(context).copyWith(
+    checkboxTheme: Theme.of(context).checkboxTheme.copyWith(
+      side: BorderSide(width: 1,color:!state.rememberPassword
+          ? UtilsColor.colorLightGreen
+          : Theme.of(context).disabledColor )
+    ),
+    ),
+              child:CheckboxListTile(
                   controlAffinity: ListTileControlAffinity.leading,
                 dense: true,
+                activeColor: UtilsColor.colorGreenPrimary,
+                checkColor: UtilsColor.colorLightGrey,
+
+                checkboxShape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  side: BorderSide(color: UtilsColor.colorLightGrey,width: 1)
+                ),
                 visualDensity: VisualDensity(horizontal: -4,vertical: -4),
                   contentPadding: EdgeInsets.zero,
                   title: Text(
           "Nhớ mật khẩu",
-            style: UtilsTextStyle.primaryTextStyle(color: UtilsColor.colorGrey),
+            style: UtilsTextStyle.primaryTextStyle(color: UtilsColor.colorGrey,size: 14),
           ),
                   value: state.rememberPassword,
                   onChanged: (onChanged) {
                     if (onChanged != null) {
                       BlocProvider.of<AuthenticationBloc>(context).add(RememberPassword(!state.rememberPassword));
                     }
-                  }),
+                  })),
           SizedBox(height: 60),
           TextButton(
             style: ButtonStyle(
@@ -182,7 +205,7 @@ class AuthenticationForm extends StatelessWidget {
               child: Text(
                 "Đăng nhập",
                 textAlign: TextAlign.center,
-                style: UtilsTextStyle.primaryTextStyle(color: Colors.white),
+                style: UtilsTextStyle.primaryTextStyle(color: Colors.white,fontWeight: FontWeight.w500),
               ),
             ),
           )
