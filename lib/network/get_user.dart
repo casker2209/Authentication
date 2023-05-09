@@ -7,12 +7,12 @@ part 'get_user.g.dart';
 @JsonSerializable()
 class GetUserResponse extends BaseResponse {
   GetUserResponse({
-      this.total, 
+      required this.total,
       this.data,
       required bool success}):super(success:success);
 
-  num? total;
-  List<Data>? data;
+  int total;
+  List<User>? data;
 
   factory GetUserResponse.fromJson(dynamic json) => _$GetUserResponseFromJson(json);
 
@@ -20,8 +20,8 @@ class GetUserResponse extends BaseResponse {
 
 }
 
-class Data {
-  Data({
+class User {
+  User({
       this.id, 
       this.username, 
       this.name, 
@@ -31,7 +31,7 @@ class Data {
       this.createdAt, 
       this.status,});
 
-  Data.fromJson(dynamic json) {
+  User.fromJson(dynamic json) {
     id = json['id'];
     username = json['username'];
     name = json['name'];
@@ -49,7 +49,7 @@ class Data {
   String? rocketId;
   String? createdAt;
   String? status;
-Data copyWith({  num? id,
+User copyWith({  num? id,
   String? username,
   String? name,
   String? role,
@@ -57,7 +57,7 @@ Data copyWith({  num? id,
   String? rocketId,
   String? createdAt,
   String? status,
-}) => Data(  id: id ?? this.id,
+}) => User(  id: id ?? this.id,
   username: username ?? this.username,
   name: name ?? this.name,
   role: role ?? this.role,

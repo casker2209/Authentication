@@ -39,7 +39,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent,AuthenticationState>{
       catch(error,stacktrace){
         if(error is DioError) {
           debugPrintStack(stackTrace:stacktrace);
-          print("Type: " + error.type.toString());
             switch (error.type) {
               case DioErrorType.cancel:
                 message = "Request to API server was cancelled";
@@ -84,8 +83,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent,AuthenticationState>{
     });
   }
 
-  void _saveInformation(SignInResponse response){
-    SharedPreferences preferences = GetIt.instance<SharedPreferences>();
+  void _saveInformation(SignInResponse response) async{
+    SharedPreferences preferences = await GetIt.instance<SharedPreferences>();
     preferences.setString(SharedPreferencesKey.TOKEN_HADU, response.system!.token!);
     preferences.setString(SharedPreferencesKey.ROLE, response.system!.role!);
     preferences.setString(SharedPreferencesKey.TOKEN_ROCKET,response.rocket!.data!.authToken!);
@@ -97,7 +96,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent,AuthenticationState>{
     GetMeResponse response = await GetIt.instance<RestClient>().getMe();
     String message;
     try{
-      emit(state.copyWith(success: true));
+      emit(state.copyWith(success: true,loading: false));
     }
     catch(error,stacktrace){
       debugPrintStack(stackTrace: stacktrace);

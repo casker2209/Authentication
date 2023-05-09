@@ -5,6 +5,7 @@ import 'package:authentication/network/get_user.dart';
 import 'package:authentication/network/response.dart';
 import 'package:authentication/utils/shared_preferences_utils.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:retrofit/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,6 +27,49 @@ abstract class RestClient {
   Future<BaseResponse> createUser(@Body() CreateUserRequest request);
   @GET("/api/users")
   Future<GetUserResponse> getUser();
+}
+
+class ErrorHandlerUtils{
+  static String handlingError(Error error,StackTrace stacktrace){
+    String message = "Undefined Error";
+    debugPrintStack(stackTrace:stacktrace);
+    if(error is DioError) {
+      switch ((error as DioError).type) {
+        case DioErrorType.cancel:
+          message = "Request to API server was cancelled";
+          break;
+        case DioErrorType.connectionTimeout:
+          message = "Connection timeout with API server";
+          break;
+        case DioErrorType.receiveTimeout:
+          message = "Receive timeout in connection with API server";
+          break;
+        case DioErrorType.sendTimeout:
+          message = "Send timeout in connection with API server";
+          break;
+        case DioErrorType.badResponse:
+          var badResponse = BaseResponse.BaseResponseFromJsonWithErrorHandling(
+              (error as DioError).response?.data);
+          message = badResponse != null ? badResponse.message! : "Bad Request";
+          break;
+        case DioErrorType.connectionError:
+          message = "Unexpected error occurred. Cannot connected to server";
+          break;
+        case DioErrorType.unknown:
+          if ((error as DioError).error != null &&
+              (error as DioError).type.toString().contains("SocketException")) {
+            message = 'No Internet';
+            break;
+          }
+          message = "Unexpected error occurred";
+          break;
+        default:
+          message = "Something went wrong";
+          break;
+      }
+    }
+    return message;
+  }
 }
 
 class AuthInterceptor extends Interceptor{

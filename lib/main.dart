@@ -4,10 +4,13 @@ import 'package:authentication/utils/Color.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-void main() {
+import 'utils/go_router.dart';
+Future main() async{
+  WidgetsFlutterBinding.ensureInitialized();
   setup();
+  await GetIt.instance.allReady();
   runApp(const MyApp());
 }
 
@@ -28,7 +31,10 @@ void setup() async{
   ]
   )
   ));
-  getIt.registerLazySingletonAsync<SharedPreferences>(() => SharedPreferences.getInstance());
+  getIt.registerSingletonAsync<SharedPreferences>(() async{
+    return await SharedPreferences.getInstance();
+  });
+  getIt.registerSingleton<GoRouterUtils>(GoRouterUtils());
 
 
 }
@@ -39,8 +45,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: AuthenticationScreen(),
+    return MaterialApp.router(
+      routerConfig: GoRouterUtils.router,
+      theme: ThemeData(
+        colorScheme: Theme.of(context).colorScheme.copyWith(primary: UtilsColor.colorGreenPrimary)
+      ),
     );
   }
 }

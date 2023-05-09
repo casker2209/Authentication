@@ -1,8 +1,11 @@
+import 'package:authentication/utils/go_router.dart';
 import 'package:authentication/utils/text_style_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../bloc/authentication_bloc.dart';
 import '../../utils/Color.dart';
@@ -83,7 +86,7 @@ class AuthenticationForm extends StatelessWidget {
         } else {
           Navigator.of(context).pop();
           if (state.success == true) {
-            showDialogSucces(context);
+            handleDialogSucces(context);
           }
           else{
             showDialogError(context, state);
@@ -97,7 +100,7 @@ class AuthenticationForm extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextFormField(
+          TextField(
             onChanged: (text) {
               BlocProvider.of<AuthenticationBloc>(context)
                   .add(UsernameChanged(text));
@@ -107,7 +110,7 @@ class AuthenticationForm extends StatelessWidget {
             decoration: InputDecoration(
                 hintText: "Số điện thoại",
                 hintStyle: UtilsTextStyle.primaryTextStyle(
-                    color: UtilsColor.colorLightGrey, size: 14),
+                    color: UtilsColor.colorGrey, size: 14),
                 fillColor: UtilsColor.colorLightGrey,
                 filled: true,
                 contentPadding:
@@ -116,10 +119,11 @@ class AuthenticationForm extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                   borderSide:
                       const BorderSide(style: BorderStyle.none, width: 0),
-                )),
+                )
+            ),
           ),
           const SizedBox(height: 24),
-          TextFormField(
+          TextField(
             obscureText: !state.showPassword,
             onChanged: (text) {
               BlocProvider.of<AuthenticationBloc>(context)
@@ -131,7 +135,7 @@ class AuthenticationForm extends StatelessWidget {
                 isDense: true,
                 hintText: "Mật khẩu",
                 hintStyle: UtilsTextStyle.primaryTextStyle(
-                    color: UtilsColor.colorLightGrey, size: 14),
+                    color: UtilsColor.colorGrey, size: 14),
                 fillColor: UtilsColor.colorLightGrey,
                 filled: true,
                 contentPadding:
@@ -235,18 +239,7 @@ class AuthenticationForm extends StatelessWidget {
         builder: (context) => const Center(child: CircularProgressIndicator()));
   }
 
-  void showDialogSucces(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) => Center(
-            child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 40),
-                color: Colors.white,
-                child: const Text(
-                  "success",
-                  textAlign: TextAlign.center,
-                ))));
+  void handleDialogSucces(BuildContext context) {
+      context.go("/users");
   }
 }
