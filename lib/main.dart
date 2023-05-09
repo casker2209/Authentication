@@ -1,9 +1,36 @@
+import 'package:authentication/network/rest_client.dart';
 import 'package:authentication/screen/login/authentication_screen.dart';
 import 'package:authentication/utils/Color.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  setup();
   runApp(const MyApp());
+}
+
+void setup() async{
+  final getIt = GetIt.instance;
+  getIt.registerLazySingleton<RestClient>(() => RestClient(Dio(
+    BaseOptions(
+        headers: {
+          'content-Type':'application/json',
+          'Accept':'*/*'
+        },
+      connectTimeout: const Duration(seconds: 60),
+      sendTimeout: const Duration(seconds: 60)
+    ),
+  )..interceptors.addAll([
+    LogInterceptor(responseBody: true,requestBody: true,request: true),
+    AuthInterceptor()
+  ]
+  )
+  ));
+  getIt.registerLazySingletonAsync<SharedPreferences>(() => SharedPreferences.getInstance());
+
+
 }
 
 class MyApp extends StatelessWidget {

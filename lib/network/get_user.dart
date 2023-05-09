@@ -1,0 +1,82 @@
+
+import 'package:authentication/network/get_user.dart';
+import 'package:authentication/network/response.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'get_user.g.dart';
+@JsonSerializable()
+class GetUserResponse extends BaseResponse {
+  GetUserResponse({
+      this.total, 
+      this.data,
+      required bool success}):super(success:success);
+
+  num? total;
+  List<Data>? data;
+
+  factory GetUserResponse.fromJson(dynamic json) => _$GetUserResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GetUserResponseToJson(this);
+
+}
+
+class Data {
+  Data({
+      this.id, 
+      this.username, 
+      this.name, 
+      this.role, 
+      this.admin, 
+      this.rocketId, 
+      this.createdAt, 
+      this.status,});
+
+  Data.fromJson(dynamic json) {
+    id = json['id'];
+    username = json['username'];
+    name = json['name'];
+    role = json['role'];
+    admin = json['admin'];
+    rocketId = json['rocketId'];
+    createdAt = json['createdAt'];
+    status = json['status'];
+  }
+  num? id;
+  String? username;
+  String? name;
+  String? role;
+  String? admin;
+  String? rocketId;
+  String? createdAt;
+  String? status;
+Data copyWith({  num? id,
+  String? username,
+  String? name,
+  String? role,
+  String? admin,
+  String? rocketId,
+  String? createdAt,
+  String? status,
+}) => Data(  id: id ?? this.id,
+  username: username ?? this.username,
+  name: name ?? this.name,
+  role: role ?? this.role,
+  admin: admin ?? this.admin,
+  rocketId: rocketId ?? this.rocketId,
+  createdAt: createdAt ?? this.createdAt,
+  status: status ?? this.status,
+);
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = id;
+    map['username'] = username;
+    map['name'] = name;
+    map['role'] = role;
+    map['admin'] = admin;
+    map['rocketId'] = rocketId;
+    map['createdAt'] = createdAt;
+    map['status'] = status;
+    return map;
+  }
+
+}
