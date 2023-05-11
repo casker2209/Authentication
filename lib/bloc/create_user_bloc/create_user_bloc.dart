@@ -30,7 +30,9 @@ class CreateUserBloc extends BaseBloc<CreateUserEvent,CreateUserState>{
           emit(state.copyWith(loading: true));
           BaseResponse response;
           if(user!=null){
-            response = await client.updateUser(UpdateUserRequest(username:event.phoneNumber,name:event.name,password: event.password),user!.username!);}
+            String? password;
+            if(event.password.isNotEmpty) password = event.password;
+            response = await client.updateUser(UpdateUserRequest(username:event.phoneNumber,name:event.name,password: password),user!.username!);}
           else{
             response = await client.createUser(CreateUserRequest(username:event.phoneNumber,name:event.name,password: event.password));
           }

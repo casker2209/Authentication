@@ -66,7 +66,7 @@ class AuthenticationScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 30),
-                AuthenticationForm()
+                _AuthenticationForm()
               ],
             ),
           ),
@@ -75,7 +75,7 @@ class AuthenticationScreen extends StatelessWidget {
   }
 }
 
-class AuthenticationForm extends StatelessWidget {
+class _AuthenticationForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthenticationBloc,AuthenticationState>(builder:
@@ -201,7 +201,7 @@ class AuthenticationForm extends StatelessWidget {
     ),
         listener: (context,state){
           NetworkHelper.networkListener(context, state,onSuccess: (){
-            handleDialogSucces(context);
+            _handleDialogSucces(context);
           });
       },
         listenWhen: (state1,state2){
@@ -210,7 +210,7 @@ class AuthenticationForm extends StatelessWidget {
     );
   }
 
-  void handleDialogSucces(BuildContext context) {
+  void _handleDialogSucces(BuildContext context) {
       context.go("/home");
   }
 }

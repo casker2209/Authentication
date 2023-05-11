@@ -71,7 +71,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
     return BlocProvider<CreateUserBloc>(
         create: (_) => CreateUserBloc(user: user),
         child: BlocConsumer<CreateUserBloc, CreateUserState>(
-            builder: (context, state) => CreateUserWidget(
+            builder: (context, state) => _CreateUserWidget(
               state,
               usernameController: usernameController,
               name: nameController,
@@ -94,12 +94,12 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
 }
 
 
-class CreateUserWidget extends StatelessWidget {
+class _CreateUserWidget extends StatelessWidget {
   CreateUserState _state;
   TextEditingController usernameController;
   TextEditingController name;
   TextEditingController password;
-  CreateUserWidget(this._state,
+  _CreateUserWidget(this._state,
       {required this.usernameController, required this.name, required this.password});
 
   @override
@@ -115,10 +115,11 @@ class CreateUserWidget extends StatelessWidget {
         bloc.add(CheckConditionEvent(canClick));
       });
     }
-    if (!name.hasListeners)
+    if (!name.hasListeners) {
       name.addListener(() {
         bloc.add(CheckConditionEvent(canClick));
       });
+    }
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       child: Column(

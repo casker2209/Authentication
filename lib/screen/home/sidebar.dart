@@ -1,5 +1,6 @@
 import 'package:authentication/bloc/home/home.dart';
 import 'package:authentication/bloc/home/home_event.dart';
+import 'package:authentication/bloc/home/home_state.dart';
 import 'package:authentication/network/get_me.dart';
 import 'package:authentication/utils/color.dart';
 import 'package:authentication/utils/shared_preferences_utils.dart';
@@ -19,12 +20,13 @@ class Sidebar extends StatelessWidget{
       children: [
         Container(height: 320,
           child: DrawerHeader(
-             decoration: BoxDecoration(
+             decoration: const BoxDecoration(
               color: UtilsColor.colorGreenPrimary
              ),
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
-              children: [SizedBox(height:80),
+              children: [
+                const SizedBox(height:80),
               Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -55,9 +57,9 @@ class Sidebar extends StatelessWidget{
         Expanded(
           child: Column(
             children: [
-              TextWithIcon(0,Icon(Icons.notifications_sharp,size:16), "Private Chat",context),
-              TextWithIcon(1,Icon(Icons.person,size:16), "Quản lý khách hàng",context),
-              TextWithIcon(2,Icon(Icons.key,size:16), "Đổi mật khẩu",context),
+              _textWithIcon(0,Icons.notifications_sharp, "Private Chat",context),
+              _textWithIcon(1,Icons.person, "Quản lý khách hàng",context),
+              _textWithIcon(2,Icons.key, "Đổi mật khẩu",context),
             ],
           ),
         )
@@ -65,19 +67,20 @@ class Sidebar extends StatelessWidget{
     );
   }
 
-  Widget TextWithIcon(int index,Widget image,String text,BuildContext blocContext){
+  Widget _textWithIcon(int index,IconData icon,String text,BuildContext blocContext){
+    HomeState state =  BlocProvider.of<HomeBloc>(blocContext).state;
     return InkWell(
       onTap: (){
         Navigator.of(blocContext).pop();
         BlocProvider.of<HomeBloc>(blocContext).add(IndexChangedEvent(index));
       },
-      child: Container(padding: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
-      color: Colors.white,
+      child: Container(padding: EdgeInsets.symmetric(vertical: 12,horizontal: 20),
+      color: state.index != index ? Colors.white : UtilsColor.colorLightGrey,
       child: Row(
         children: [
-          image,
+          Icon(icon,size: 16,color: state.index != index ? Colors.black : UtilsColor.colorGreenPrimary,),
           SizedBox(width: 35),
-          Text(text,style: UtilsTextStyle.primaryTextStyle(color: UtilsColor.colorGrey3))
+          Text(text,style: UtilsTextStyle.primaryTextStyle(color: state.index != index ? UtilsColor.colorGrey3 : UtilsColor.colorGreenPrimary,))
         ],
       ),
       ),

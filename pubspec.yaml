@@ -48,6 +48,7 @@ dependencies:
   request_permission: ^2.1.4
   permission_handler: ^10.2.0
   flutter_native_contact_picker: ^0.0.4
+  firebase_core: ^2.11.0
 
 
 dev_dependencies:

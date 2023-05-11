@@ -7,15 +7,22 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
-class NetworkBlocListener extends StatelessWidget{
+class NetworkBlocConsumer<B extends BaseBloc,S extends NetworkState> extends StatelessWidget{
   Function? onSuccess;
+  Function? onError;
+  BuildContext blocContext;
+  Widget child;
+  NetworkBlocConsumer({this.onSuccess,this.onError,required this.blocContext,required this.child});
   @override
   Widget build(BuildContext context) {
-    return BlocListener<NetworkBloc,NetworkState>(listener: (context,state){
-      NetworkHelper.networkListener(context, state,onSuccess: onSuccess);
+    return BlocConsumer<StateStreamable<S>,S>(builder:
+    (blocContext,state){
+     return child;
+    }, listener:
+    (blocContext,state){
+      NetworkHelper.networkListener(blocContext, state,onSuccess: onSuccess,onError: onError);
     },
-      listenWhen: (state1,state2) => state1.loading != state2.loading,
-
+    buildWhen: (state1,state2) => state1.loading != state2.loading,
     );
   }
 

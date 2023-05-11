@@ -14,7 +14,7 @@ import 'package:go_router/go_router.dart';
 
 class AccountListScreen extends StatefulWidget{
   @override
-  State<StatefulWidget> createState() => AccountListScreenState();
+  State<StatefulWidget> createState() => _AccountListScreenState();
 }
 
 class RefreshAccountListScreen extends RefreshWidget{
@@ -25,7 +25,7 @@ class RefreshAccountListScreen extends RefreshWidget{
         BlocProvider(create: (_) => AccountListBloc()..add(GetUserEvent())),
         BlocProvider(create: (_) => UpdateRemoveUserBloc())
       ],
-      child: AccountListWidget(),
+      child: _AccountListWidget(),
     );
   }
 
@@ -37,8 +37,7 @@ class RefreshAccountListScreen extends RefreshWidget{
 
 }
 
-class AccountListScreenState extends State<AccountListScreen> with WidgetsBindingObserver {
-  static const String ACCOUNT_LIST_SCREEN_PATH = "/users";
+class _AccountListScreenState extends State<AccountListScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance?.addObserver(this);
@@ -65,12 +64,12 @@ class AccountListScreenState extends State<AccountListScreen> with WidgetsBindin
           BlocProvider(create: (_) => AccountListBloc()..add(GetUserEvent())),
           BlocProvider(create: (_) => UpdateRemoveUserBloc())
         ],
-        child: AccountListWidget(),
+        child: _AccountListWidget(),
       );
   }
 }
 
-class AccountListWidget extends StatelessWidget {
+class _AccountListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AccountListBloc bloc = BlocProvider.of<AccountListBloc>(context);
@@ -97,11 +96,11 @@ class AccountListWidget extends StatelessWidget {
                         shrinkWrap: true,
                         itemBuilder: (_, index) {
                           List<User> data = state.users;
-                          return AccountStatus(data[index], index: index);
+                          return _AccountStatus(data[index], index: index);
                         },
                         itemCount: state.users.length),
                   )
-                : ErrorScreen(text: bloc.state.message)),
+                : _ErrorScreen(text: bloc.state.message)),
         buildWhen: (state1,state2) => state1!=state2,
         listener: (context, state) {
           NetworkHelper.networkListener(context, state, onSuccess: () {});
@@ -114,9 +113,9 @@ class AccountListWidget extends StatelessWidget {
   }
 }
 
-class ErrorScreen extends StatelessWidget {
+class _ErrorScreen extends StatelessWidget {
   String text;
-  ErrorScreen({required this.text});
+  _ErrorScreen({required this.text});
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -125,8 +124,8 @@ class ErrorScreen extends StatelessWidget {
   }
 }
 
-class AccountStatus extends StatelessWidget {
-  AccountStatus(this.user, {required this.index});
+class _AccountStatus extends StatelessWidget {
+  _AccountStatus(this.user, {required this.index});
   int index;
   User user;
 
