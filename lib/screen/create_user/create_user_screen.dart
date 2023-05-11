@@ -79,11 +79,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
             ),
             listener: (context, state) {
               NetworkHelper.networkListener(context, state, onSuccess: () {
-                if(widget.user == null) {
-                  context.push("/success");
-                } else {
-                  context.pop();
-                }
+                  context.push("/success",extra: user==null);
               });
             },
             listenWhen: (state1, state2) {

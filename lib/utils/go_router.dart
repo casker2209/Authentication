@@ -63,7 +63,7 @@ class GoRouterUtils {
     ),
     GoRoute(
     path:"/success",
-    builder: (context,state) => SuccessScreen()
+    builder: (context,state) => SuccessScreen(isCreate:state.extra==true)
     ),
     GoRoute(
     path:"/create",

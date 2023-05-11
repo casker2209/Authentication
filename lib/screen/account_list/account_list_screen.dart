@@ -145,9 +145,7 @@ class _AccountStatus extends StatelessWidget {
     }
     return GestureDetector(
       onTap: () {
-        context.push("/create", extra: user).then((value) {
-          if(user!=null) BlocProvider.of<AccountListBloc>(context).add(GetUserEvent());
-        });
+        context.push("/create", extra: user);
       },
       onLongPress: () {
         showDialog(

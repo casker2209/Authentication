@@ -5,6 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 class SuccessScreen extends StatelessWidget{
+  bool isCreate;
+  SuccessScreen({required this.isCreate});
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -32,7 +34,10 @@ class SuccessScreen extends StatelessWidget{
                       textAlign: TextAlign.center,
                       style:UtilsTextStyle.primaryTextStyle(color: UtilsColor.colorGreenPrimary,fontWeight: FontWeight.w700,size: 32)),
                   SizedBox(height:10),
-                  Text("Chúc mừng bạn đã đăng ký thành công tài khoản trên ứng dụng di động.",style:UtilsTextStyle.primaryTextStyle(color: Colors.black,fontWeight: FontWeight.w500,size: 18)),
+                  Text(
+                      isCreate?
+                      "Chúc mừng bạn đã đăng ký thành công tài khoản trên ứng dụng di động.":
+                      "Sửa thông tin thành công tài khoản trên ứng dụng di động.",style:UtilsTextStyle.primaryTextStyle(color: Colors.black,fontWeight: FontWeight.w500,size: 18)),
                   SizedBox(height:50),
                   InkWell(
                     onTap: (){
