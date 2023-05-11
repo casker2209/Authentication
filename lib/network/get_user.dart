@@ -1,9 +1,16 @@
 
 import 'package:authentication/network/get_user.dart';
 import 'package:authentication/network/response.dart';
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'get_user.g.dart';
+enum Status{
+  ACTIVATED,
+  DEACTIVATED,
+  SMS
+
+}
 @JsonSerializable()
 class GetUserResponse extends BaseResponse {
   GetUserResponse({
@@ -20,15 +27,15 @@ class GetUserResponse extends BaseResponse {
 
 }
 
-class User {
+class User extends Equatable{
   User({
-      this.id, 
-      this.username, 
-      this.name, 
-      this.role, 
-      this.admin, 
-      this.rocketId, 
-      this.createdAt, 
+      this.id,
+      this.username,
+      this.name,
+      this.role,
+      this.admin,
+      this.rocketId,
+      this.createdAt,
       this.status,});
 
   User.fromJson(dynamic json) {
@@ -78,5 +85,14 @@ User copyWith({  num? id,
     map['status'] = status;
     return map;
   }
+
+  @override
+  List<Object?> get props =>[id,
+    username,
+    name,
+    role, admin,
+    rocketId,
+    createdAt,
+    status];
 
 }

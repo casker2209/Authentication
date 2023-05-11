@@ -1,3 +1,7 @@
+import 'package:authentication/bloc/authentication/authentication_event.dart';
+import 'package:authentication/bloc/authentication/authentication_state.dart';
+import 'package:authentication/network/login.dart';
+import 'package:authentication/screen/base_bloc_network_widget.dart';
 import 'package:authentication/utils/go_router.dart';
 import 'package:authentication/utils/text_style_utils.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +11,8 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../bloc/authentication_bloc.dart';
-import '../../utils/Color.dart';
+import '../../bloc/authentication/authentication_bloc.dart';
+import '../../utils/color.dart';
 
 class AuthenticationScreen extends StatelessWidget {
   @override
@@ -20,13 +24,9 @@ class AuthenticationScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: MultiBlocProvider(
-        providers: [
-          BlocProvider<AuthenticationBloc>(
-              lazy: false, create: (context) => AuthenticationBloc())
-        ],
-        child: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.light,
+      body: BlocProvider<AuthenticationBloc>(
+        create: (context) => AuthenticationBloc()
+        ,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 40),
             child: Column(
@@ -70,7 +70,6 @@ class AuthenticationScreen extends StatelessWidget {
               ],
             ),
           ),
-        ),
       ),
     );
   }
@@ -79,167 +78,139 @@ class AuthenticationScreen extends StatelessWidget {
 class AuthenticationForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
-      listener: (context, state) {
-        if (state.loading) {
-          showDialogLoading(context);
-        } else {
-          Navigator.of(context).pop();
-          if (state.success == true) {
-            handleDialogSucces(context);
-          }
-          else{
-            showDialogError(context, state);
-          }
-        }
-      },
-      listenWhen: (state1, state2) {
-        return state1.loading != state2.loading;
-      },
-      builder: (context, state) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TextField(
-            onChanged: (text) {
-              BlocProvider.of<AuthenticationBloc>(context)
-                  .add(UsernameChanged(text));
-            },
-            style:
-                UtilsTextStyle.primaryTextStyle(color: Colors.black, size: 14),
-            decoration: InputDecoration(
-                hintText: "Số điện thoại",
-                hintStyle: UtilsTextStyle.primaryTextStyle(
-                    color: UtilsColor.colorGrey, size: 14),
-                fillColor: UtilsColor.colorLightGrey,
-                filled: true,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+    return BlocConsumer<AuthenticationBloc,AuthenticationState>(builder:
+    (context,state) => Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextField(
+          onChanged: (text) {
+            BlocProvider.of<AuthenticationBloc>(context)
+                .add(UsernameChanged(text));
+          },
+          keyboardType:TextInputType.phone,
+          style:
+          UtilsTextStyle.primaryTextStyle(color: Colors.black, size: 14),
+          decoration: InputDecoration(
+              hintText: "Số điện thoại",
+              hintStyle: UtilsTextStyle.primaryTextStyle(
+                  color: UtilsColor.colorGrey, size: 14),
+              fillColor: UtilsColor.colorLightGrey,
+              filled: true,
+              contentPadding:
+              const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide:
+                const BorderSide(style: BorderStyle.none, width: 0),
+              )
+          ),
+        ),
+        const SizedBox(height: 24),
+        TextField(
+          obscureText: !state.showPassword,
+          onChanged: (text) {
+            BlocProvider.of<AuthenticationBloc>(context)
+                .add(PasswordChanged(text));
+          },
+          style:
+          UtilsTextStyle.primaryTextStyle(color: Colors.black, size: 14),
+          decoration: InputDecoration(
+              isDense: true,
+              hintText: "Mật khẩu",
+              hintStyle: UtilsTextStyle.primaryTextStyle(
+                  color: UtilsColor.colorGrey, size: 14),
+              fillColor: UtilsColor.colorLightGrey,
+              filled: true,
+              contentPadding:
+              const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              suffixIcon: IconButton(
+                icon: Icon(!state.showPassword
+                    ? Icons.remove_red_eye_sharp
+                    : Icons.remove_red_eye_outlined),
+                onPressed: () {
+                  BlocProvider.of<AuthenticationBloc>(context)
+                      .add(ShowPassword(!state.showPassword));
+                },
+              ),
+              border: OutlineInputBorder(
                   borderSide:
-                      const BorderSide(style: BorderStyle.none, width: 0),
-                )
+                  const BorderSide(style: BorderStyle.none, width: 0),
+                  borderRadius: BorderRadius.circular(30))),
+        ),
+        const SizedBox(height: 18),
+        Theme(
+            data: Theme.of(context).copyWith(
+              checkboxTheme: Theme.of(context).checkboxTheme.copyWith(
+                  side: BorderSide(
+                      width: 1,
+                      color: !state.rememberPassword
+                          ? UtilsColor.colorLightGreen
+                          : Theme.of(context).disabledColor)),
             ),
-          ),
-          const SizedBox(height: 24),
-          TextField(
-            obscureText: !state.showPassword,
-            onChanged: (text) {
-              BlocProvider.of<AuthenticationBloc>(context)
-                  .add(PasswordChanged(text));
-            },
-            style:
-                UtilsTextStyle.primaryTextStyle(color: Colors.black, size: 14),
-            decoration: InputDecoration(
-                isDense: true,
-                hintText: "Mật khẩu",
-                hintStyle: UtilsTextStyle.primaryTextStyle(
-                    color: UtilsColor.colorGrey, size: 14),
-                fillColor: UtilsColor.colorLightGrey,
-                filled: true,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                suffixIcon: IconButton(
-                  icon: Icon(!state.showPassword
-                      ? Icons.remove_red_eye_sharp
-                      : Icons.remove_red_eye_outlined),
-                  onPressed: () {
-                    BlocProvider.of<AuthenticationBloc>(context)
-                        .add(ShowPassword(!state.showPassword));
-                  },
-                ),
-                border: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(style: BorderStyle.none, width: 0),
-                    borderRadius: BorderRadius.circular(30))),
-          ),
-          const SizedBox(height: 18),
-          Theme(
-              data: Theme.of(context).copyWith(
-                checkboxTheme: Theme.of(context).checkboxTheme.copyWith(
+            child: CheckboxListTile(
+                controlAffinity: ListTileControlAffinity.leading,
+                dense: true,
+                activeColor: UtilsColor.colorGreenPrimary,
+                checkColor: UtilsColor.colorLightGrey,
+                checkboxShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
                     side: BorderSide(
-                        width: 1,
-                        color: !state.rememberPassword
-                            ? UtilsColor.colorLightGreen
-                            : Theme.of(context).disabledColor)),
-              ),
-              child: CheckboxListTile(
-                  controlAffinity: ListTileControlAffinity.leading,
-                  dense: true,
-                  activeColor: UtilsColor.colorGreenPrimary,
-                  checkColor: UtilsColor.colorLightGrey,
-                  checkboxShape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      side: BorderSide(
-                          color: UtilsColor.colorLightGrey, width: 1)),
-                  visualDensity: VisualDensity(horizontal: -4, vertical: -4),
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(
-                    "Nhớ mật khẩu",
-                    style: UtilsTextStyle.primaryTextStyle(
-                        color: UtilsColor.colorGrey, size: 14),
-                  ),
-                  value: state.rememberPassword,
-                  onChanged: (onChanged) {
-                    if (onChanged != null) {
-                      BlocProvider.of<AuthenticationBloc>(context)
-                          .add(RememberPassword(!state.rememberPassword));
-                    }
-                  })),
-          SizedBox(height: 60),
-          TextButton(
-            style: ButtonStyle(
-                padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0))),
-                backgroundColor: TextButton.styleFrom(
-                        backgroundColor: state.canLogin ? UtilsColor.colorGreenPrimary : UtilsColor.colorLightGrey)
-                    .backgroundColor),
-            onPressed: state.canLogin
-                ? () {
-                    FocusScope.of(context).unfocus();
+                        color: UtilsColor.colorLightGrey, width: 1)),
+                visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  "Nhớ mật khẩu",
+                  style: UtilsTextStyle.primaryTextStyle(
+                      color: UtilsColor.colorGrey, size: 14),
+                ),
+                value: state.rememberPassword,
+                onChanged: (onChanged) {
+                  if (onChanged != null) {
                     BlocProvider.of<AuthenticationBloc>(context)
-                        .add(LoginButtonPressed());
+                        .add(RememberPassword(!state.rememberPassword));
                   }
-                : null,
-            child: Center(
-              child: Text(
-                "Đăng nhập",
-                textAlign: TextAlign.center,
-                style: UtilsTextStyle.primaryTextStyle(
-                    color: state.canLogin ? Colors.white : UtilsColor.colorGreenPrimary, fontWeight: FontWeight.w500),
-              ),
+                })),
+        const SizedBox(height: 60),
+        TextButton(
+          style: ButtonStyle(
+              padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0))),
+              backgroundColor: TextButton.styleFrom(
+                  backgroundColor: state.canLogin ? UtilsColor.colorGreenPrimary : UtilsColor.colorLightGrey)
+                  .backgroundColor),
+          onPressed: state.canLogin
+              ? () {
+            FocusScope.of(context).unfocus();
+            BlocProvider.of<AuthenticationBloc>(context)
+                .add(LoginButtonPressed());
+          }
+              : null,
+          child: Center(
+            child: Text(
+              "Đăng nhập",
+              textAlign: TextAlign.center,
+              style: UtilsTextStyle.primaryTextStyle(
+                  color: state.canLogin ? Colors.white : UtilsColor.colorGreenPrimary, fontWeight: FontWeight.w500),
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
+    ),
+        listener: (context,state){
+          NetworkHelper.networkListener(context, state,onSuccess: (){
+            handleDialogSucces(context);
+          });
+      },
+        listenWhen: (state1,state2){
+          return state1.loading != state2.loading;
+        },
     );
   }
 
-  void showDialogError(BuildContext context, AuthenticationState state) {
-    showDialog(
-        context: context,
-        builder: (context) => Center(
-            child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 40),
-                color: Colors.white,
-                child: Text(
-                  state.message!,
-                  textAlign: TextAlign.center,
-                ))));
-  }
-
-  void showDialogLoading(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) => const Center(child: CircularProgressIndicator()));
-  }
-
   void handleDialogSucces(BuildContext context) {
-      context.go("/users");
+      context.go("/home");
   }
 }

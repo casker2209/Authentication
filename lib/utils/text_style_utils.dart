@@ -9,4 +9,12 @@ class UtilsTextStyle{
       fontWeight: fontWeight ?? FontWeight.normal
     );
   }
+   static TextStyle? robotoTextStyle({double size = 16,required Color color,FontWeight? fontWeight}) {
+     return TextStyle(
+         color: color,
+         fontSize: size,
+         fontFamily: "Roboto",
+         fontWeight: fontWeight ?? FontWeight.normal
+     );
+   }
 }

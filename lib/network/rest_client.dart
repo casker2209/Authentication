@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:authentication/network/create_user.dart';
 import 'package:authentication/network/get_user.dart';
 import 'package:authentication/network/response.dart';
+import 'package:authentication/network/update_user.dart';
 import 'package:authentication/utils/shared_preferences_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
@@ -23,10 +24,15 @@ abstract class RestClient {
   Future<SignInResponse> signIn(@Body() SignInRequest request);
   @GET("/api/users/me")
   Future<GetMeResponse> getMe();
+  @PUT("/api/users/{id}")
+  Future<BaseResponse> updateUser(@Body() UpdateUserRequest request,@Path("id") String userId);
   @POST("/api/users")
   Future<BaseResponse> createUser(@Body() CreateUserRequest request);
   @GET("/api/users")
   Future<GetUserResponse> getUser();
+  @DELETE("/api/users/{id}")
+  Future<BaseResponse> deleteUser(@Path("id") String userId);
+
 }
 
 class ErrorHandlerUtils{
@@ -90,6 +96,10 @@ class AuthInterceptor extends Interceptor{
     if(preferences.containsKey(SharedPreferencesKey.USER_ID_ROCKET)){
       options.headers.addAll({"X-User-Id":"Bearer ${preferences.getString(SharedPreferencesKey.USER_ID_ROCKET)}"});
     }
+  }
+  @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
+    super.onResponse(response, handler);
   }
 }
 

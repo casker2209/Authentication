@@ -44,6 +44,10 @@ dependencies:
   get_it: ^7.5.0
   shared_preferences: ^2.1.1
   go_router: ^7.0.0
+  fluttercontactpicker: ^4.7.0
+  request_permission: ^2.1.4
+  permission_handler: ^10.2.0
+  flutter_native_contact_picker: ^0.0.4
 
 
 dev_dependencies:
@@ -75,8 +79,12 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/images/logo.png
-    - assets/images/*
-
+    - assets/images/icon_status_deactive.png
+    - assets/images/icon_status_active.png
+    - assets/images/icon_status_sms.png
+    - assets/images/icon_success.png
+    - assets/images/icon_splash.png
+    - assets/images/icon_white_bubble.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

@@ -1,6 +1,6 @@
 import 'package:authentication/network/rest_client.dart';
 import 'package:authentication/screen/login/authentication_screen.dart';
-import 'package:authentication/utils/Color.dart';
+import 'package:authentication/utils/color.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -11,9 +11,10 @@ Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
   setup();
   await GetIt.instance.allReady();
+  router = await GoRouterUtils.getRouter();
   runApp(const MyApp());
 }
-
+late GoRouter router;
 void setup() async{
   final getIt = GetIt.instance;
   getIt.registerLazySingleton<RestClient>(() => RestClient(Dio(
@@ -35,8 +36,6 @@ void setup() async{
     return await SharedPreferences.getInstance();
   });
   getIt.registerSingleton<GoRouterUtils>(GoRouterUtils());
-
-
 }
 
 class MyApp extends StatelessWidget {
@@ -46,7 +45,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig: GoRouterUtils.router,
+      routerConfig: router,
       theme: ThemeData(
         colorScheme: Theme.of(context).colorScheme.copyWith(primary: UtilsColor.colorGreenPrimary)
       ),

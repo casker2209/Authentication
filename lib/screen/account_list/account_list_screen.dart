@@ -1,98 +1,120 @@
-import 'package:authentication/bloc/account_list_bloc.dart';
+import 'package:authentication/bloc/account_list/account_list_bloc.dart';
+import 'package:authentication/bloc/account_list/account_list_event.dart';
+import 'package:authentication/bloc/account_list/account_list_state.dart';
 import 'package:authentication/network/get_user.dart';
 import 'package:authentication/network/login.dart';
-import 'package:authentication/utils/Color.dart';
+import 'package:authentication/screen/base_bloc_network_widget.dart';
+import 'package:authentication/utils/color.dart';
+import 'package:authentication/utils/refreshable_widget.dart';
 import 'package:authentication/utils/text_style_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class AccountListScreen extends StatelessWidget{
+class AccountListScreen extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() => AccountListScreenState();
+}
+
+class RefreshAccountListScreen extends RefreshWidget{
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        titleSpacing: 23,
-
-        title: Row(
-          children: [
-
-            InkWell(child: Icon(Icons.menu,color: Colors.white,size: 16),
-              onTap: () {
-
-              },
-            ),
-            SizedBox(width: 30),
-            Text("Quản lý khách hàng",
-              style: UtilsTextStyle.primaryTextStyle(color: Colors.white,fontWeight: FontWeight.w600,size: 20),
-            ),
-            Spacer(),
-            Text("11/11/2022",
-              style: UtilsTextStyle.primaryTextStyle(color: Colors.white,fontWeight: FontWeight.w600,size: 16,
-                  family:"Roboto"),
-            )
-          ],
-        ),
-      ),
-      body: BlocProvider(
-        create: (BuildContext context) => AccountListBloc()..add(GetUserEvent()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => AccountListBloc()..add(GetUserEvent())),
+        BlocProvider(create: (_) => UpdateRemoveUserBloc())
+      ],
       child: AccountListWidget(),
-      ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        context.go("/create");
-      },
-        backgroundColor: UtilsColor.colorGreenPrimary,
-        child: Icon(Icons.add),
-      ),
     );
+  }
 
+  @override
+  void refreshCallback() {
+    super.refreshCallback();
+    AccountListBloc().add(GetUserEvent());
   }
 
 }
 
+class AccountListScreenState extends State<AccountListScreen> with WidgetsBindingObserver {
+  static const String ACCOUNT_LIST_SCREEN_PATH = "/users";
+  @override
+  void initState() {
+    WidgetsBinding.instance?.addObserver(this);
+    super.initState();
+  }
 
-class AccountListWidget extends StatelessWidget{
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }
+
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      AccountListBloc().add(GetUserEvent());
+    }
+  }
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => AccountListBloc()..add(GetUserEvent())),
+          BlocProvider(create: (_) => UpdateRemoveUserBloc())
+        ],
+        child: AccountListWidget(),
+      );
+  }
+}
+
+class AccountListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AccountListBloc bloc = BlocProvider.of<AccountListBloc>(context);
-    return BlocConsumer<AccountListBloc,AccountListState>(
-        builder: (context,state) =>
-        Container(
-          decoration: BoxDecoration(
-            color: UtilsColor.colorLightGrey
-          ),
-          height: double.infinity,
-          width: double.infinity,
-          child:
-          state.loading ? LoadingScreen() : state.success && state.response! is GetUserResponse ? SingleChildScrollView(
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemBuilder: (context,index) {
-                  List<User> data = (BlocProvider.of<AccountListBloc>(context).state.response as GetUserResponse).data!;
-                  return AccountStatus(data[index]);
-                },
-                itemCount: (bloc.state.response as GetUserResponse).total),
-          ) : ErrorScreen(text:state.message),
-        ),
-        listener: (context,state){
-
+    return BlocListener<UpdateRemoveUserBloc, UpdateRemoveState>(
+      listener: (contextUpdateRemove, state) {
+        NetworkHelper.networkListener(contextUpdateRemove, state, onSuccess: () {
+          if (state.index != -1) {
+            BlocProvider.of<AccountListBloc>(context).add(UpdateRemoveUserEvent(
+                index: state.index, status: state.status));
+          }
         });
-  }
-
-}
-
-class LoadingScreen extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: CircularProgressIndicator(),
+      },
+      listenWhen: (state1, state2) {
+        return state1.loading != state2.loading;
+      },
+      child: BlocConsumer<AccountListBloc, AccountListState>(
+        builder: (context, state) => Container(
+            decoration: BoxDecoration(color: UtilsColor.colorLightGrey),
+            height: double.infinity,
+            width: double.infinity,
+            child: bloc.state.success && bloc.state.response! is GetUserResponse
+                ? SingleChildScrollView(
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemBuilder: (_, index) {
+                          List<User> data = state.users;
+                          return AccountStatus(data[index], index: index);
+                        },
+                        itemCount: state.users.length),
+                  )
+                : ErrorScreen(text: bloc.state.message)),
+        buildWhen: (state1,state2) => state1!=state2,
+        listener: (context, state) {
+          NetworkHelper.networkListener(context, state, onSuccess: () {});
+        },
+        listenWhen: (state1, state2) {
+          return state1.loading != state2.loading;
+        },
+      ),
     );
   }
-
 }
 
-class ErrorScreen extends StatelessWidget{
+class ErrorScreen extends StatelessWidget {
   String text;
   ErrorScreen({required this.text});
   @override
@@ -101,55 +123,122 @@ class ErrorScreen extends StatelessWidget{
       child: Text(text),
     );
   }
-
 }
 
 class AccountStatus extends StatelessWidget {
-  AccountStatus(this.user);
-
+  AccountStatus(this.user, {required this.index});
+  int index;
   User user;
 
   @override
   Widget build(BuildContext context) {
     String image;
-    switch(user.status){
-      case "active":
+    switch (user.status) {
+      case "ACTIVATED":
         image = "assets/images/icon_status_active.png";
         break;
-      case "deactive":
+      case "DEACTIVATED":
         image = "assets/images/icon_status_deactive.png";
         break;
       default:
         image = "assets/images/icon_status_sms.png";
         break;
     }
-    return Container(
-      margin: EdgeInsets.fromLTRB(4,4,8,0),
-      padding: EdgeInsets.symmetric(vertical: 14,horizontal: 20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8)
-      ),
-      child: Row(
+    return GestureDetector(
+      onTap: () {
+        context.push("/create", extra: user);
+      },
+      onLongPress: () {
+        showDialog(
+            context: context,
+            builder: (dialogContext_) {
+              return Dialog(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: []..addAll([
+                      dialogOption(user, dialogContext_, context,
+                          status: "ACTIVATED"),
+                    Container(width: double.infinity,color: Colors.black,height: 0.1),
+                    dialogOption(user, dialogContext_, context,
+                          status: "DEACTIVATED"),
+                    Container(width: double.infinity,color: Colors.black,height: 0.1),
+                    dialogOption(user, dialogContext_, context,
+                          status: "SMS"),
+                      Container(width: double.infinity,color: Colors.black,height: 0.1),
+                      dialogOption(user, dialogContext_, context)
+                    ]),
+                ),
+              );
+            });
+      },
+      child: Container(
+        margin: EdgeInsets.fromLTRB(4, 4, 8, 0),
+        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(8)),
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.asset(
-              image,width: 43,height: 43,
+              image,
+              width: 43,
+              height: 43,
             ),
             SizedBox(width: 16),
             Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(user.name!,style:
-                UtilsTextStyle.primaryTextStyle(color: Colors.black,size:18,fontWeight:FontWeight.w600)),
-                  SizedBox(height:6),
-                  Text("Phone: ${user.username}",style:
-                  UtilsTextStyle.primaryTextStyle(color: UtilsColor.colorDarkGrey,size:13,fontWeight:FontWeight.w500)
-                  )
-              ]),
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(user.name!,
+                      style: UtilsTextStyle.primaryTextStyle(
+                          color: Colors.black,
+                          size: 18,
+                          fontWeight: FontWeight.w600)),
+                  SizedBox(height: 6),
+                  Text("Phone: ${user.username}",
+                      style: UtilsTextStyle.primaryTextStyle(
+                          color: UtilsColor.colorDarkGrey,
+                          size: 13,
+                          fontWeight: FontWeight.w500))
+                ]),
           ],
         ),
+      ),
     );
+  }
+
+  Widget dialogOption(
+      User user, BuildContext _context, BuildContext _blocContext,
+      {String? status}) {
+    return status == null
+        ? InkWell(
+            onTap: () {
+              Navigator.of(_context).pop();
+              BlocProvider.of<UpdateRemoveUserBloc>(_blocContext)
+                  .add(DeleteUserEvent(user.username!, index));
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12.5),
+              child: Text("Xóa",
+                  style: UtilsTextStyle.robotoTextStyle(color: Colors.black)),
+            ),
+          )
+        : user.status == status
+            ? Container()
+            : InkWell(
+                onTap: () {
+                  Navigator.of(_context).pop();
+                  BlocProvider.of<UpdateRemoveUserBloc>(_blocContext)
+                      .add(UpdateUserEvent(status, user.username!, index));
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12.5),
+                  child: Text(
+                    "Đổi trạng thái sang ${status.toLowerCase()}",
+                    style: UtilsTextStyle.robotoTextStyle(color: Colors.black),
+                  ),
+                ),
+              );
   }
 }
