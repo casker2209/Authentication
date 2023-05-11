@@ -36,6 +36,6 @@ class CreateUserState extends NetworkState<BaseResponse> {
 
   @override
   // TODO: implement props
-  List get props => [loading,showPassword,success,loading,message,canClick];
+  List get props => [loading,showPassword,success,loading,message,canClick,user];
 
 }

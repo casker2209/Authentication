@@ -18,10 +18,10 @@ class CreateUserScreen extends StatefulWidget {
   User? user;
   CreateUserScreen({this.user});
   @override
-  State<StatefulWidget> createState() => _CreateUserState();
+  State<StatefulWidget> createState() => _CreateUserScreenState();
 }
 
-class _CreateUserState extends State<CreateUserScreen> {
+class _CreateUserScreenState extends State<CreateUserScreen> {
   late TextEditingController usernameController = TextEditingController();
   late TextEditingController nameController = TextEditingController();
   late TextEditingController passwordController = TextEditingController();
@@ -68,7 +68,6 @@ class _CreateUserState extends State<CreateUserScreen> {
         }
 
   BlocProvider _CreateUserBlocConsumer(User? user){
-    User? user;
     return BlocProvider<CreateUserBloc>(
         create: (_) => CreateUserBloc(user: user),
         child: BlocConsumer<CreateUserBloc, CreateUserState>(
@@ -80,7 +79,11 @@ class _CreateUserState extends State<CreateUserScreen> {
             ),
             listener: (context, state) {
               NetworkHelper.networkListener(context, state, onSuccess: () {
-                context.push("/success");
+                if(widget.user == null) {
+                  context.push("/success");
+                } else {
+                  context.pop();
+                }
               });
             },
             listenWhen: (state1, state2) {
@@ -102,10 +105,11 @@ class CreateUserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CreateUserBloc bloc = BlocProvider.of<CreateUserBloc>(context);
-    if (!usernameController.hasListeners)
+    if (!usernameController.hasListeners) {
       usernameController.addListener(() {
         bloc.add(CheckConditionEvent(canClick));
       });
+    }
     if (!password.hasListeners) {
       password.addListener(() {
         bloc.add(CheckConditionEvent(canClick));
