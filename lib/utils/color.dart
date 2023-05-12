@@ -8,4 +8,5 @@ class UtilsColor{
   static const Color colorDarkGrey = Color(0xFF6C6C6C);
   static const Color colorGrey2 = Color(0xFF79747E);
   static const Color colorGrey3 = Color(0xFF5E5F6A);
+  static const Color colorDarkRed = Color(0xFFD03535);
 }

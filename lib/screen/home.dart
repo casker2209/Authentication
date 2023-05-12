@@ -3,6 +3,7 @@ import 'package:authentication/bloc/home/home_event.dart';
 import 'package:authentication/bloc/home/home_state.dart';
 import 'package:authentication/network/get_me.dart';
 import 'package:authentication/screen/account_list/account_list_screen.dart';
+import 'package:authentication/screen/change_password/change_password_screen.dart';
 import 'package:authentication/screen/home/sidebar.dart';
 import 'package:authentication/utils/color.dart';
 import 'package:authentication/utils/refreshable_widget.dart';
@@ -16,8 +17,10 @@ import 'package:go_router/go_router.dart';
 class HomeScreen extends StatelessWidget{
   List<RefreshWidget> widgetList =  [
     RefreshAccountListScreen(),
-    RefreshAccountListScreen()
+    RefreshAccountListScreen(),
+    ChangePasswordScreen()
   ];
+  List<String> tag = const ["Quản lý mật khẩu","Private Chat","Đổi mật khẩu"];
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -34,14 +37,13 @@ class HomeScreen extends StatelessWidget{
             titleSpacing: 23,
             title: Row(
               children: [
-                Text("Quản lý khách hàng",
+                Text(tag[state.index],
                   style: UtilsTextStyle.primaryTextStyle(color: Colors.white,fontWeight: FontWeight.w600,size: 20),
                 ),
                 Spacer(),
-                Text("11/11/2022",
+                state.index != 2 ? Text("11/11/2022",
                   style: UtilsTextStyle.primaryTextStyle(color: Colors.white,fontWeight: FontWeight.w600,size: 16,
-                      family:"Roboto"),
-                )
+                      family:"Roboto")) : Container()
               ],
             ),
           ),

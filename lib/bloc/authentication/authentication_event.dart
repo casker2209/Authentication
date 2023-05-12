@@ -3,7 +3,7 @@ class AuthenticationEvent{}
 
 class LoginButtonPressed extends AuthenticationEvent{
 }
-
+class GetPasswordEvent extends AuthenticationEvent{}
 class UsernameChanged extends AuthenticationEvent{
   String text;
   UsernameChanged(this.text);

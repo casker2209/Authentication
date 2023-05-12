@@ -26,7 +26,9 @@ class AccountListBloc extends BaseBloc<AccountListEvent,AccountListState>{
       }
       else if(event is UpdateRemoveUserEvent){
         if(event.status == null){
-          emit(state.copyWith(users:List.of(state.users..removeAt(event.index))));
+          List<User> users = List.from(state.users..removeAt(event.index));
+          emit(state.copyWith(users:[]));
+          emit(state.copyWith(users:users));
         }
         else{
           List<User> users = List.from(state.users);

@@ -21,6 +21,10 @@ class AuthenticationBloc extends BaseBloc<AuthenticationEvent,AuthenticationStat
       if(event is ShowPassword){
         emit(state.copyWith(showPassword: event.onChanged));
       }
+      if(event is GetPasswordEvent){
+        String password =  SharedPreferencesUtils.instance.getString(SharedPreferencesKey.PASSWORD) ?? '';
+        emit(state.copyWith(password: password,rememberPassword: password.isNotEmpty));
+      }
       if(event is UsernameChanged){
           emit(state.copyWith(username: event.text));
       }
@@ -46,6 +50,7 @@ class AuthenticationBloc extends BaseBloc<AuthenticationEvent,AuthenticationStat
       if(success){
         //emit(state.copyWith(response: response,loading:false,success: true));
         SharedPreferencesUtils.saveInformationLogin(response);
+        if(state.rememberPassword) SharedPreferencesUtils.savePassword(state.password);
         _getMe(response);
       }
       else{

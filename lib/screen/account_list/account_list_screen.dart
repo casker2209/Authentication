@@ -91,15 +91,14 @@ class _AccountListWidget extends StatelessWidget {
             height: double.infinity,
             width: double.infinity,
             child: bloc.state.success && bloc.state.response! is GetUserResponse
-                ? SingleChildScrollView(
-                    child: ListView.builder(
+                ? ListView.builder(
+                        scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         itemBuilder: (_, index) {
                           List<User> data = state.users;
                           return _AccountStatus(data[index], index: index);
                         },
-                        itemCount: state.users.length),
-                  )
+                        itemCount: state.users.length)
                 : _ErrorScreen(text: bloc.state.message)),
         buildWhen: (state1,state2) => state1!=state2,
         listener: (context, state) {
@@ -152,21 +151,24 @@ class _AccountStatus extends StatelessWidget {
             context: context,
             builder: (dialogContext_) {
               return Dialog(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: []..addAll([
-                      dialogOption(user, dialogContext_, context,
-                          status: "ACTIVATED"),
-                    Container(width: double.infinity,color: Colors.black,height: 0.1),
-                    dialogOption(user, dialogContext_, context,
-                          status: "DEACTIVATED"),
-                    Container(width: double.infinity,color: Colors.black,height: 0.1),
-                    dialogOption(user, dialogContext_, context,
-                          status: "SMS"),
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: []..addAll([
+                        dialogOption(user, dialogContext_, context,
+                            status: "ACTIVATED"),
                       Container(width: double.infinity,color: Colors.black,height: 0.1),
-                      dialogOption(user, dialogContext_, context)
-                    ]),
+                      dialogOption(user, dialogContext_, context,
+                            status: "DEACTIVATED"),
+                      Container(width: double.infinity,color: Colors.black,height: 0.1),
+                      dialogOption(user, dialogContext_, context,
+                            status: "SMS"),
+                        Container(width: double.infinity,color: Colors.black,height: 0.1),
+                        dialogOption(user, dialogContext_, context)
+                      ]),
+                  ),
                 ),
               );
             });
@@ -218,6 +220,7 @@ class _AccountStatus extends StatelessWidget {
                   .add(DeleteUserEvent(user.username!, index));
             },
             child: Container(
+              width: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12.5),
               child: Text("Xóa",
                   style: UtilsTextStyle.robotoTextStyle(color: Colors.black)),
@@ -232,6 +235,7 @@ class _AccountStatus extends StatelessWidget {
                       .add(UpdateUserEvent(status, user.username!, index));
                 },
                 child: Container(
+                  width: double.infinity,
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12.5),
                   child: Text(
                     "Đổi trạng thái sang ${status.toLowerCase()}",

@@ -6,6 +6,7 @@ import 'package:authentication/bloc/create_user_bloc/create_user_state.dart';
 import 'package:authentication/network/get_user.dart';
 import 'package:authentication/screen/base_bloc_network_widget.dart';
 import 'package:authentication/utils/color.dart';
+import 'package:authentication/utils/request_permission_utils.dart';
 import 'package:authentication/utils/text_style_utils.dart';
 import 'package:authentication/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +23,9 @@ class CreateUserScreen extends StatefulWidget {
 }
 
 class _CreateUserScreenState extends State<CreateUserScreen> {
-  late TextEditingController usernameController = TextEditingController();
-  late TextEditingController nameController = TextEditingController();
-  late TextEditingController passwordController = TextEditingController();
+  late TextEditingController usernameController;
+  late TextEditingController nameController;
+  late TextEditingController passwordController;
   @override
   void initState() {
     super.initState();
@@ -57,7 +58,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
         leading: Padding(
           padding: EdgeInsets.fromLTRB(4, 0, 0, 0),
           child: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: Icon(Icons.arrow_back,size:24),
               onPressed: () {
                 context.pop();
               }),
@@ -74,8 +75,8 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
             builder: (context, state) => _CreateUserWidget(
               state,
               usernameController: usernameController,
-              name: nameController,
-              password: passwordController,
+              nameController: nameController,
+              passwordController: passwordController,
             ),
             listener: (context, state) {
               NetworkHelper.networkListener(context, state, onSuccess: () {
@@ -93,10 +94,10 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
 class _CreateUserWidget extends StatelessWidget {
   CreateUserState _state;
   TextEditingController usernameController;
-  TextEditingController name;
-  TextEditingController password;
+  TextEditingController nameController;
+  TextEditingController passwordController;
   _CreateUserWidget(this._state,
-      {required this.usernameController, required this.name, required this.password});
+      {required this.usernameController, required this.nameController, required this.passwordController});
 
   @override
   Widget build(BuildContext context) {
@@ -106,13 +107,13 @@ class _CreateUserWidget extends StatelessWidget {
         bloc.add(CheckConditionEvent(canClick));
       });
     }
-    if (!password.hasListeners) {
-      password.addListener(() {
+    if (!passwordController.hasListeners) {
+      passwordController.addListener(() {
         bloc.add(CheckConditionEvent(canClick));
       });
     }
-    if (!name.hasListeners) {
-      name.addListener(() {
+    if (!nameController.hasListeners) {
+      nameController.addListener(() {
         bloc.add(CheckConditionEvent(canClick));
       });
     }
@@ -133,8 +134,8 @@ class _CreateUserWidget extends StatelessWidget {
               onPressed: () {
                 if (canClick) {
                   bloc.add(ButtonPressedEvent(
-                      name: name.text,
-                      password: password.text,
+                      name: nameController.text,
+                      password: passwordController.text,
                       phoneNumber: usernameController.text));
                 }
               },
@@ -177,7 +178,7 @@ class _CreateUserWidget extends StatelessWidget {
           width: 200,
           child: TextFormField(
             maxLines: 1,
-            controller: name,
+            controller: nameController,
             decoration: InputDecoration(
                 hintText: "Họ tên",
                 hintStyle: UtilsTextStyle.primaryTextStyle(
@@ -191,7 +192,7 @@ class _CreateUserWidget extends StatelessWidget {
         SizedBox(width: 20),
         InkWell(
           onTap: () {
-            bloc.add(GetContactEvent());
+            _onContactButton();
           },
           child: Container(
             height: 40,
@@ -208,6 +209,19 @@ class _CreateUserWidget extends StatelessWidget {
         )
       ],
     );
+  }
+
+  void _onContactButton() async{
+    bool permission = await RequestPermissionUtils.requestContact();
+    if(permission){
+      final PhoneContact contact =
+      await FlutterContactPicker.pickPhoneContact();
+      print(contact.toString());
+            if(contact!=null){
+              nameController.text = contact.fullName ?? "";
+              usernameController.text = contact.phoneNumber== null ? "" :  contact.phoneNumber!.number==null ? "" : contact.phoneNumber!.number!.replaceAll(' ', '');
+            }
+    }
   }
 
   Widget usernameForm(Bloc bloc) {
@@ -236,7 +250,7 @@ class _CreateUserWidget extends StatelessWidget {
         const SizedBox(width: 20),
         InkWell(
           onTap: () {
-            bloc.add(ClearTextEvent());
+            clearAll();
           },
           child: Container(
             height: 40,
@@ -266,7 +280,7 @@ class _CreateUserWidget extends StatelessWidget {
           width: 200,
           child: TextFormField(
             maxLines: 1,
-            controller: password,
+            controller: passwordController,
             obscureText: _state.showPassword,
             decoration: InputDecoration(
                 hintText: "Mật khẩu",
@@ -289,7 +303,7 @@ class _CreateUserWidget extends StatelessWidget {
         const SizedBox(width: 20),
         InkWell(
           onTap: () {
-            password.text = Utils.randomString();
+            passwordController.text = Utils.randomString();
           },
           child: Container(
             height: 40,
@@ -308,11 +322,11 @@ class _CreateUserWidget extends StatelessWidget {
     );
   }
 
-  bool get canClick => usernameController.text.isNotEmpty && name.text.isNotEmpty && (password.text.length >= 15 || _state.user!=null);
+  bool get canClick => usernameController.text.isNotEmpty && nameController.text.isNotEmpty && (passwordController.text.length >= 15 || _state.user!=null);
 
   void clearAll(){
     usernameController.clear();
-    name.clear();
-    password.clear();
+    nameController.clear();
+    passwordController.clear();
   }
 }

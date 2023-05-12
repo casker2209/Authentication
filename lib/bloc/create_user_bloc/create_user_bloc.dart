@@ -12,11 +12,9 @@ import 'package:authentication/network/rest_client.dart';
 import 'package:authentication/network/update_user.dart';
 import 'package:authentication/utils/request_permission_utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:get_it/get_it.dart';
 
 class CreateUserBloc extends BaseBloc<CreateUserEvent,CreateUserState>{
-  final FlutterContactPicker _contactPicker = new FlutterContactPicker();
   User? user;
   CreateUserBloc({this.user}):super(CreateUserState(loading:false, message: '', success: false,showPassword:false,user:user)){
     on<CreateUserEvent>((event, emit) async{

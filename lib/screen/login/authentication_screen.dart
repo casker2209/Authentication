@@ -25,8 +25,7 @@ class AuthenticationScreen extends StatelessWidget {
         elevation: 0,
       ),
       body: BlocProvider<AuthenticationBloc>(
-        create: (context) => AuthenticationBloc()
-        ,
+        create: (context) => AuthenticationBloc()..add(GetPasswordEvent()),
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 40),
             child: Column(

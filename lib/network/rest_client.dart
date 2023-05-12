@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:authentication/network/change_password.dart';
 import 'package:authentication/network/create_user.dart';
 import 'package:authentication/network/get_user.dart';
 import 'package:authentication/network/response.dart';
@@ -32,6 +33,8 @@ abstract class RestClient {
   Future<GetUserResponse> getUser();
   @DELETE("/api/users/{id}")
   Future<BaseResponse> deleteUser(@Path("id") String userId);
+  @POST("/api/users/me/change-password")
+  Future<BaseResponse> changePassword(@Body() ChangePasswordRequest request);
 
 }
 
