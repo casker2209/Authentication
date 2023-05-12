@@ -17,6 +17,11 @@ class CheckShowConfirmedPassword extends ChangePasswordEvent{
   CheckShowConfirmedPassword(this.canShow);
 }
 
+class CheckCanClickEvent extends ChangePasswordEvent{
+  bool canClick;
+  CheckCanClickEvent(this.canClick);
+}
+
 class ButtonPressedEvent extends ChangePasswordEvent{
   String oldPassword;
   String newPassword;

@@ -31,4 +31,7 @@ class ChangePasswordState extends NetworkState<BaseResponse>{
       response : response ?? this.response, success: success ?? this.success,
     );
   }
+
+  @override
+  List get props => [loading,success,response,message,canClick,showNewPassword,showOldPassword,showConfirmedPassword];
 }

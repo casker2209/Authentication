@@ -17,6 +17,9 @@ class ChangePasswordBloc extends BaseBloc<ChangePasswordEvent,ChangePasswordStat
       else if(event is CheckShowConfirmedPassword){
         emit(state.copyWith(showConfirmedPassword: event.canShow));
       }
+      else if(event is CheckCanClickEvent){
+        emit(state.copyWith(canClick: event.canClick));
+      }
       else if(event is ButtonPressedEvent){
         try{
           emit(state.copyWith(loading: true));

@@ -73,8 +73,17 @@ late TextEditingController confirmedPasswordController;
   void initState() {
     super.initState();
     oldPasswordController = TextEditingController();
+    oldPasswordController.addListener(() {
+      widget.bloc.add(CheckCanClickEvent(canClick));
+    });
     newPasswordController = TextEditingController();
+    newPasswordController.addListener(() {
+      widget.bloc.add(CheckCanClickEvent(canClick));
+    });
     confirmedPasswordController = TextEditingController();
+    confirmedPasswordController.addListener(() {
+      widget.bloc.add(CheckCanClickEvent(canClick));
+    });
   }
 
   @override
@@ -122,7 +131,7 @@ late TextEditingController confirmedPasswordController;
           ),
           SizedBox(height: 30),
           InkWell(
-              onTap: canClick ? (){
+              onTap: widget.state.canClick ? (){
                 if(newPasswordController.text != confirmedPasswordController.text) DialogUtils.showDialogError(context, "Mật khẩu xác nhận không trùng mật khẩu mới");
                 else {
                   BlocProvider.of<ChangePasswordBloc>(widget.blocContext).add(ButtonPressedEvent(newPassword: newPasswordController.text, oldPassword: oldPasswordController.text));
@@ -133,14 +142,14 @@ late TextEditingController confirmedPasswordController;
           const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: canClick
+          color: widget.state.canClick
               ? UtilsColor.colorGreenPrimary
               : UtilsColor.colorLightGrey,
         ),
         child: Text("Lưu",
           textAlign: TextAlign.center,
           style: UtilsTextStyle.robotoTextStyle(
-              color: canClick
+              color: widget.state.canClick
                   ? Colors.white
                   : UtilsColor.colorGreenPrimary,
               size: 16))))
@@ -151,6 +160,7 @@ late TextEditingController confirmedPasswordController;
   }
 
   bool get canClick{
+    print("Check");
     return oldPasswordController.text.isNotEmpty && newPasswordController.text.isNotEmpty && confirmedPasswordController.text.isNotEmpty;
   }
 }

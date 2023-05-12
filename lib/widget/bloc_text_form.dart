@@ -32,10 +32,12 @@ class _BlocTextFieldState extends State<BlocTextField>{
         return SizedBox(
           child: TextField(
             obscureText: !state.showPassword,
+            controller: widget.textEditingController,
             style:
             UtilsTextStyle.primaryTextStyle(color: widget.color, size: widget.size),
             decoration: InputDecoration(
                 isDense: true,
+                contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                 hintText: "Mật khẩu",
                 hintStyle: UtilsTextStyle.primaryTextStyle(
                     color: widget.hintColor, size: 12),
