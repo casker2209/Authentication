@@ -1,11 +1,10 @@
-import 'package:authentication/bloc/home/home.dart';
+import 'package:authentication/bloc/home/home_bloc.dart';
 import 'package:authentication/bloc/home/home_event.dart';
 import 'package:authentication/bloc/home/home_state.dart';
-import 'package:authentication/network/get_me.dart';
 import 'package:authentication/screen/account_list/account_list_screen.dart';
 import 'package:authentication/screen/change_password/change_password_screen.dart';
 import 'package:authentication/screen/home/sidebar.dart';
-import 'package:authentication/utils/color.dart';
+import 'package:authentication/utils/color_utils.dart';
 import 'package:authentication/utils/refreshable_widget.dart';
 import 'package:authentication/utils/shared_preferences_utils.dart';
 import 'package:authentication/utils/text_style_utils.dart';
@@ -38,11 +37,11 @@ class HomeScreen extends StatelessWidget{
             title: Row(
               children: [
                 Text(tag[state.index],
-                  style: UtilsTextStyle.primaryTextStyle(color: Colors.white,fontWeight: FontWeight.w600,size: 20),
+                  style: TextStyleUtils.primaryTextStyle(color: Colors.white,fontWeight: FontWeight.w600,size: 20),
                 ),
                 Spacer(),
                 state.index != 2 ? Text("11/11/2022",
-                  style: UtilsTextStyle.primaryTextStyle(color: Colors.white,fontWeight: FontWeight.w600,size: 16,
+                  style: TextStyleUtils.primaryTextStyle(color: Colors.white,fontWeight: FontWeight.w600,size: 16,
                       family:"Roboto")) : Container()
               ],
             ),
@@ -52,7 +51,7 @@ class HomeScreen extends StatelessWidget{
               onPressed: () {
                 context.push("/create");
               },
-              backgroundColor: UtilsColor.colorGreenPrimary,
+              backgroundColor: ColorUtils.colorGreenPrimary,
               child: Icon(Icons.add),
             ) : null
         ),

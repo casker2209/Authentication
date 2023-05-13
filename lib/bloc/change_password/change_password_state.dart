@@ -1,6 +1,6 @@
 import 'package:authentication/bloc/base/base_state.dart';
 import 'package:authentication/bloc/network/network_state.dart';
-import 'package:authentication/network/response.dart';
+import 'package:authentication/network/response/response.dart';
 
 class ChangePasswordState extends NetworkState<BaseResponse>{
   bool canClick;

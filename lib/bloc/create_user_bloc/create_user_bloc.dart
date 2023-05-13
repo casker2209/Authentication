@@ -5,16 +5,16 @@ import 'package:authentication/bloc/base/base_bloc.dart';
 import 'package:authentication/bloc/create_user_bloc/create_user_bloc.dart';
 import 'package:authentication/bloc/create_user_bloc/create_user_event.dart';
 import 'package:authentication/bloc/create_user_bloc/create_user_state.dart';
-import 'package:authentication/network/create_user.dart';
-import 'package:authentication/network/get_user.dart';
-import 'package:authentication/network/response.dart';
-import 'package:authentication/network/rest_client.dart';
-import 'package:authentication/network/update_user.dart';
+import 'package:authentication/bloc/network/network_bloc.dart';
+import 'package:authentication/network/request/create_user.dart';
+import 'package:authentication/network/request/update_user.dart';
+import 'package:authentication/network/response/get_user.dart';
+import 'package:authentication/network/response/response.dart';
 import 'package:authentication/utils/request_permission_utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-class CreateUserBloc extends BaseBloc<CreateUserEvent,CreateUserState>{
+class CreateUserBloc extends NetworkBloc<CreateUserEvent,CreateUserState>{
   User? user;
   CreateUserBloc({this.user}):super(CreateUserState(loading:false, message: '', success: false,showPassword:false,user:user)){
     on<CreateUserEvent>((event, emit) async{
@@ -42,16 +42,6 @@ class CreateUserBloc extends BaseBloc<CreateUserEvent,CreateUserState>{
         }
       }
       else if(event is GetContactEvent){
-          //bool permission = await RequestPermissionUtils.requestContact();
-          //if(permission){
-            /*Contact? contact = await _contactPicker.selectContact();
-            print(contact.toString());
-            if(contact!=null){
-              emit(state.copyWith(
-                  username: contact.phoneNumbers!=null && contact.phoneNumbers!.isNotEmpty ? contact.phoneNumbers!.first : "",
-                  name: contact.fullName?? ""));
-            }
-          //}*/
         }
       else if(event is ShowPasswordEvent){
        emit(state.copyWith(showPassword:event.show));

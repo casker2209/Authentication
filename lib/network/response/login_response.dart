@@ -1,35 +1,7 @@
-import 'package:authentication/network/response.dart';
-import 'package:json_annotation/json_annotation.dart';
-
-
-
-class SignInRequest{
-  SignInRequest(this.username,this.password);
-  String username;
-  String password;
-
-  Map<String, dynamic> toJson() {
-    return {
-      'username': this.username,
-      'password': this.password,
-    };
-  }
-
-  factory SignInRequest.fromJson(Map<String, dynamic> map) {
-    return SignInRequest(
-      map['username'] as String,
-      map['password'] as String,
-    );
-  }
-
-
-}
-
-
 class SignInResponse{
   SignInResponse({
-      this.system, 
-      this.rocket});
+    this.system,
+    this.rocket});
 
   SignInResponse.fromJson(dynamic json) {
     system = json['system'] != null ? System.fromJson(json['system']) : null;
@@ -37,11 +9,11 @@ class SignInResponse{
   }
   System? system;
   Rocket? rocket;
-SignInResponse copyWith({  System? system,
-  Rocket? rocket,
-}) => SignInResponse(  system: system ?? this.system,
-  rocket: rocket ?? this.rocket,
-);
+  SignInResponse copyWith({  System? system,
+    Rocket? rocket,
+  }) => SignInResponse(  system: system ?? this.system,
+    rocket: rocket ?? this.rocket,
+  );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (system != null) {
@@ -57,8 +29,8 @@ SignInResponse copyWith({  System? system,
 
 class Rocket {
   Rocket({
-      this.status, 
-      this.data,});
+    this.status,
+    this.data,});
 
   Rocket.fromJson(dynamic json) {
     status = json['status'];
@@ -66,11 +38,11 @@ class Rocket {
   }
   String? status;
   Data? data;
-Rocket copyWith({  String? status,
-  Data? data,
-}) => Rocket(  status: status ?? this.status,
-  data: data ?? this.data,
-);
+  Rocket copyWith({  String? status,
+    Data? data,
+  }) => Rocket(  status: status ?? this.status,
+    data: data ?? this.data,
+  );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['status'] = status;
@@ -84,9 +56,9 @@ Rocket copyWith({  String? status,
 
 class Data {
   Data({
-      this.userId, 
-      this.authToken, 
-      this.me,});
+    this.userId,
+    this.authToken,
+    this.me,});
 
   Data.fromJson(dynamic json) {
     userId = json['userId'];
@@ -96,13 +68,13 @@ class Data {
   String? userId;
   String? authToken;
   Me? me;
-Data copyWith({  String? userId,
-  String? authToken,
-  Me? me,
-}) => Data(  userId: userId ?? this.userId,
-  authToken: authToken ?? this.authToken,
-  me: me ?? this.me,
-);
+  Data copyWith({  String? userId,
+    String? authToken,
+    Me? me,
+  }) => Data(  userId: userId ?? this.userId,
+    authToken: authToken ?? this.authToken,
+    me: me ?? this.me,
+  );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['userId'] = userId;
@@ -117,19 +89,19 @@ Data copyWith({  String? userId,
 
 class Me {
   Me({
-      this.id, 
-      this.services, 
-      this.username, 
-      this.emails, 
-      this.status, 
-      this.active, 
-      this.updatedAt, 
-      this.roles, 
-      this.name, 
-      this.requirePasswordChange, 
-      this.settings, 
-      this.statusConnection, 
-      this.avatarUrl,});
+    this.id,
+    this.services,
+    this.username,
+    this.emails,
+    this.status,
+    this.active,
+    this.updatedAt,
+    this.roles,
+    this.name,
+    this.requirePasswordChange,
+    this.settings,
+    this.statusConnection,
+    this.avatarUrl,});
 
   Me.fromJson(dynamic json) {
     id = json['_id'];
@@ -164,33 +136,33 @@ class Me {
   Settings? settings;
   String? statusConnection;
   String? avatarUrl;
-Me copyWith({  String? id,
-  Services? services,
-  String? username,
-  List<Emails>? emails,
-  String? status,
-  bool? active,
-  String? updatedAt,
-  List<String>? roles,
-  String? name,
-  bool? requirePasswordChange,
-  Settings? settings,
-  String? statusConnection,
-  String? avatarUrl,
-}) => Me(  id: id ?? this.id,
-  services: services ?? this.services,
-  username: username ?? this.username,
-  emails: emails ?? this.emails,
-  status: status ?? this.status,
-  active: active ?? this.active,
-  updatedAt: updatedAt ?? this.updatedAt,
-  roles: roles ?? this.roles,
-  name: name ?? this.name,
-  requirePasswordChange: requirePasswordChange ?? this.requirePasswordChange,
-  settings: settings ?? this.settings,
-  statusConnection: statusConnection ?? this.statusConnection,
-  avatarUrl: avatarUrl ?? this.avatarUrl,
-);
+  Me copyWith({  String? id,
+    Services? services,
+    String? username,
+    List<Emails>? emails,
+    String? status,
+    bool? active,
+    String? updatedAt,
+    List<String>? roles,
+    String? name,
+    bool? requirePasswordChange,
+    Settings? settings,
+    String? statusConnection,
+    String? avatarUrl,
+  }) => Me(  id: id ?? this.id,
+    services: services ?? this.services,
+    username: username ?? this.username,
+    emails: emails ?? this.emails,
+    status: status ?? this.status,
+    active: active ?? this.active,
+    updatedAt: updatedAt ?? this.updatedAt,
+    roles: roles ?? this.roles,
+    name: name ?? this.name,
+    requirePasswordChange: requirePasswordChange ?? this.requirePasswordChange,
+    settings: settings ?? this.settings,
+    statusConnection: statusConnection ?? this.statusConnection,
+    avatarUrl: avatarUrl ?? this.avatarUrl,
+  );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = id;
@@ -219,8 +191,8 @@ Me copyWith({  String? id,
 
 class Settings {
   Settings({
-      this.profile, 
-      this.preferences,});
+    this.profile,
+    this.preferences,});
 
   Settings.fromJson(dynamic json) {
     profile = json['profile'];
@@ -228,11 +200,11 @@ class Settings {
   }
   dynamic profile;
   Preferences? preferences;
-Settings copyWith({  dynamic profile,
-  Preferences? preferences,
-}) => Settings(  profile: profile ?? this.profile,
-  preferences: preferences ?? this.preferences,
-);
+  Settings copyWith({  dynamic profile,
+    Preferences? preferences,
+  }) => Settings(  profile: profile ?? this.profile,
+    preferences: preferences ?? this.preferences,
+  );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['profile'] = profile;
@@ -246,36 +218,36 @@ Settings copyWith({  dynamic profile,
 
 class Preferences {
   Preferences({
-      this.enableAutoAway, 
-      this.idleTimeLimit, 
-      this.desktopNotificationRequireInteraction, 
-      this.desktopNotifications, 
-      this.pushNotifications, 
-      this.unreadAlert, 
-      this.useEmojis, 
-      this.convertAsciiEmoji, 
-      this.autoImageLoad, 
-      this.saveMobileBandwidth, 
-      this.collapseMediaByDefault, 
-      this.hideUsernames, 
-      this.hideRoles, 
-      this.hideFlexTab, 
-      this.displayAvatars, 
-      this.sidebarGroupByType, 
-      this.sidebarViewMode, 
-      this.sidebarDisplayAvatar, 
-      this.sidebarShowUnread, 
-      this.sidebarSortby, 
-      this.alsoSendThreadToChannel, 
-      this.sidebarShowFavorites, 
-      this.sendOnEnter, 
-      this.messageViewMode, 
-      this.emailNotificationMode, 
-      this.newRoomNotification, 
-      this.newMessageNotification, 
-      this.muteFocusedConversations, 
-      this.notificationsSoundVolume, 
-      this.useLegacyMessageTemplate,});
+    this.enableAutoAway,
+    this.idleTimeLimit,
+    this.desktopNotificationRequireInteraction,
+    this.desktopNotifications,
+    this.pushNotifications,
+    this.unreadAlert,
+    this.useEmojis,
+    this.convertAsciiEmoji,
+    this.autoImageLoad,
+    this.saveMobileBandwidth,
+    this.collapseMediaByDefault,
+    this.hideUsernames,
+    this.hideRoles,
+    this.hideFlexTab,
+    this.displayAvatars,
+    this.sidebarGroupByType,
+    this.sidebarViewMode,
+    this.sidebarDisplayAvatar,
+    this.sidebarShowUnread,
+    this.sidebarSortby,
+    this.alsoSendThreadToChannel,
+    this.sidebarShowFavorites,
+    this.sendOnEnter,
+    this.messageViewMode,
+    this.emailNotificationMode,
+    this.newRoomNotification,
+    this.newMessageNotification,
+    this.muteFocusedConversations,
+    this.notificationsSoundVolume,
+    this.useLegacyMessageTemplate,});
 
   Preferences.fromJson(dynamic json) {
     enableAutoAway = json['enableAutoAway'];
@@ -339,67 +311,67 @@ class Preferences {
   bool? muteFocusedConversations;
   num? notificationsSoundVolume;
   bool? useLegacyMessageTemplate;
-Preferences copyWith({  bool? enableAutoAway,
-  num? idleTimeLimit,
-  bool? desktopNotificationRequireInteraction,
-  String? desktopNotifications,
-  String? pushNotifications,
-  bool? unreadAlert,
-  bool? useEmojis,
-  bool? convertAsciiEmoji,
-  bool? autoImageLoad,
-  bool? saveMobileBandwidth,
-  bool? collapseMediaByDefault,
-  bool? hideUsernames,
-  bool? hideRoles,
-  bool? hideFlexTab,
-  bool? displayAvatars,
-  bool? sidebarGroupByType,
-  String? sidebarViewMode,
-  bool? sidebarDisplayAvatar,
-  bool? sidebarShowUnread,
-  String? sidebarSortby,
-  String? alsoSendThreadToChannel,
-  bool? sidebarShowFavorites,
-  String? sendOnEnter,
-  num? messageViewMode,
-  String? emailNotificationMode,
-  String? newRoomNotification,
-  String? newMessageNotification,
-  bool? muteFocusedConversations,
-  num? notificationsSoundVolume,
-  bool? useLegacyMessageTemplate,
-}) => Preferences(  enableAutoAway: enableAutoAway ?? this.enableAutoAway,
-  idleTimeLimit: idleTimeLimit ?? this.idleTimeLimit,
-  desktopNotificationRequireInteraction: desktopNotificationRequireInteraction ?? this.desktopNotificationRequireInteraction,
-  desktopNotifications: desktopNotifications ?? this.desktopNotifications,
-  pushNotifications: pushNotifications ?? this.pushNotifications,
-  unreadAlert: unreadAlert ?? this.unreadAlert,
-  useEmojis: useEmojis ?? this.useEmojis,
-  convertAsciiEmoji: convertAsciiEmoji ?? this.convertAsciiEmoji,
-  autoImageLoad: autoImageLoad ?? this.autoImageLoad,
-  saveMobileBandwidth: saveMobileBandwidth ?? this.saveMobileBandwidth,
-  collapseMediaByDefault: collapseMediaByDefault ?? this.collapseMediaByDefault,
-  hideUsernames: hideUsernames ?? this.hideUsernames,
-  hideRoles: hideRoles ?? this.hideRoles,
-  hideFlexTab: hideFlexTab ?? this.hideFlexTab,
-  displayAvatars: displayAvatars ?? this.displayAvatars,
-  sidebarGroupByType: sidebarGroupByType ?? this.sidebarGroupByType,
-  sidebarViewMode: sidebarViewMode ?? this.sidebarViewMode,
-  sidebarDisplayAvatar: sidebarDisplayAvatar ?? this.sidebarDisplayAvatar,
-  sidebarShowUnread: sidebarShowUnread ?? this.sidebarShowUnread,
-  sidebarSortby: sidebarSortby ?? this.sidebarSortby,
-  alsoSendThreadToChannel: alsoSendThreadToChannel ?? this.alsoSendThreadToChannel,
-  sidebarShowFavorites: sidebarShowFavorites ?? this.sidebarShowFavorites,
-  sendOnEnter: sendOnEnter ?? this.sendOnEnter,
-  messageViewMode: messageViewMode ?? this.messageViewMode,
-  emailNotificationMode: emailNotificationMode ?? this.emailNotificationMode,
-  newRoomNotification: newRoomNotification ?? this.newRoomNotification,
-  newMessageNotification: newMessageNotification ?? this.newMessageNotification,
-  muteFocusedConversations: muteFocusedConversations ?? this.muteFocusedConversations,
-  notificationsSoundVolume: notificationsSoundVolume ?? this.notificationsSoundVolume,
-  useLegacyMessageTemplate: useLegacyMessageTemplate ?? this.useLegacyMessageTemplate,
-);
+  Preferences copyWith({  bool? enableAutoAway,
+    num? idleTimeLimit,
+    bool? desktopNotificationRequireInteraction,
+    String? desktopNotifications,
+    String? pushNotifications,
+    bool? unreadAlert,
+    bool? useEmojis,
+    bool? convertAsciiEmoji,
+    bool? autoImageLoad,
+    bool? saveMobileBandwidth,
+    bool? collapseMediaByDefault,
+    bool? hideUsernames,
+    bool? hideRoles,
+    bool? hideFlexTab,
+    bool? displayAvatars,
+    bool? sidebarGroupByType,
+    String? sidebarViewMode,
+    bool? sidebarDisplayAvatar,
+    bool? sidebarShowUnread,
+    String? sidebarSortby,
+    String? alsoSendThreadToChannel,
+    bool? sidebarShowFavorites,
+    String? sendOnEnter,
+    num? messageViewMode,
+    String? emailNotificationMode,
+    String? newRoomNotification,
+    String? newMessageNotification,
+    bool? muteFocusedConversations,
+    num? notificationsSoundVolume,
+    bool? useLegacyMessageTemplate,
+  }) => Preferences(  enableAutoAway: enableAutoAway ?? this.enableAutoAway,
+    idleTimeLimit: idleTimeLimit ?? this.idleTimeLimit,
+    desktopNotificationRequireInteraction: desktopNotificationRequireInteraction ?? this.desktopNotificationRequireInteraction,
+    desktopNotifications: desktopNotifications ?? this.desktopNotifications,
+    pushNotifications: pushNotifications ?? this.pushNotifications,
+    unreadAlert: unreadAlert ?? this.unreadAlert,
+    useEmojis: useEmojis ?? this.useEmojis,
+    convertAsciiEmoji: convertAsciiEmoji ?? this.convertAsciiEmoji,
+    autoImageLoad: autoImageLoad ?? this.autoImageLoad,
+    saveMobileBandwidth: saveMobileBandwidth ?? this.saveMobileBandwidth,
+    collapseMediaByDefault: collapseMediaByDefault ?? this.collapseMediaByDefault,
+    hideUsernames: hideUsernames ?? this.hideUsernames,
+    hideRoles: hideRoles ?? this.hideRoles,
+    hideFlexTab: hideFlexTab ?? this.hideFlexTab,
+    displayAvatars: displayAvatars ?? this.displayAvatars,
+    sidebarGroupByType: sidebarGroupByType ?? this.sidebarGroupByType,
+    sidebarViewMode: sidebarViewMode ?? this.sidebarViewMode,
+    sidebarDisplayAvatar: sidebarDisplayAvatar ?? this.sidebarDisplayAvatar,
+    sidebarShowUnread: sidebarShowUnread ?? this.sidebarShowUnread,
+    sidebarSortby: sidebarSortby ?? this.sidebarSortby,
+    alsoSendThreadToChannel: alsoSendThreadToChannel ?? this.alsoSendThreadToChannel,
+    sidebarShowFavorites: sidebarShowFavorites ?? this.sidebarShowFavorites,
+    sendOnEnter: sendOnEnter ?? this.sendOnEnter,
+    messageViewMode: messageViewMode ?? this.messageViewMode,
+    emailNotificationMode: emailNotificationMode ?? this.emailNotificationMode,
+    newRoomNotification: newRoomNotification ?? this.newRoomNotification,
+    newMessageNotification: newMessageNotification ?? this.newMessageNotification,
+    muteFocusedConversations: muteFocusedConversations ?? this.muteFocusedConversations,
+    notificationsSoundVolume: notificationsSoundVolume ?? this.notificationsSoundVolume,
+    useLegacyMessageTemplate: useLegacyMessageTemplate ?? this.useLegacyMessageTemplate,
+  );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['enableAutoAway'] = enableAutoAway;
@@ -439,8 +411,8 @@ Preferences copyWith({  bool? enableAutoAway,
 
 class Emails {
   Emails({
-      this.address, 
-      this.verified,});
+    this.address,
+    this.verified,});
 
   Emails.fromJson(dynamic json) {
     address = json['address'];
@@ -448,11 +420,11 @@ class Emails {
   }
   String? address;
   bool? verified;
-Emails copyWith({  String? address,
-  bool? verified,
-}) => Emails(  address: address ?? this.address,
-  verified: verified ?? this.verified,
-);
+  Emails copyWith({  String? address,
+    bool? verified,
+  }) => Emails(  address: address ?? this.address,
+    verified: verified ?? this.verified,
+  );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['address'] = address;
@@ -464,8 +436,8 @@ Emails copyWith({  String? address,
 
 class Services {
   Services({
-      this.password, 
-      this.email2fa,});
+    this.password,
+    this.email2fa,});
 
   Services.fromJson(dynamic json) {
     password = json['password'] != null ? Password.fromJson(json['password']) : null;
@@ -473,11 +445,11 @@ class Services {
   }
   Password? password;
   Email2fa? email2fa;
-Services copyWith({  Password? password,
-  Email2fa? email2fa,
-}) => Services(  password: password ?? this.password,
-  email2fa: email2fa ?? this.email2fa,
-);
+  Services copyWith({  Password? password,
+    Email2fa? email2fa,
+  }) => Services(  password: password ?? this.password,
+    email2fa: email2fa ?? this.email2fa,
+  );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (password != null) {
@@ -493,15 +465,15 @@ Services copyWith({  Password? password,
 
 class Email2fa {
   Email2fa({
-      this.enabled,});
+    this.enabled,});
 
   Email2fa.fromJson(dynamic json) {
     enabled = json['enabled'];
   }
   bool? enabled;
-Email2fa copyWith({  bool? enabled,
-}) => Email2fa(  enabled: enabled ?? this.enabled,
-);
+  Email2fa copyWith({  bool? enabled,
+  }) => Email2fa(  enabled: enabled ?? this.enabled,
+  );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['enabled'] = enabled;
@@ -512,15 +484,15 @@ Email2fa copyWith({  bool? enabled,
 
 class Password {
   Password({
-      this.bcrypt,});
+    this.bcrypt,});
 
   Password.fromJson(dynamic json) {
     bcrypt = json['bcrypt'];
   }
   String? bcrypt;
-Password copyWith({  String? bcrypt,
-}) => Password(  bcrypt: bcrypt ?? this.bcrypt,
-);
+  Password copyWith({  String? bcrypt,
+  }) => Password(  bcrypt: bcrypt ?? this.bcrypt,
+  );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['bcrypt'] = bcrypt;
@@ -531,8 +503,8 @@ Password copyWith({  String? bcrypt,
 
 class System {
   System({
-      this.token, 
-      this.role,});
+    this.token,
+    this.role,});
 
   System.fromJson(dynamic json) {
     token = json['token'];
@@ -540,11 +512,11 @@ class System {
   }
   String? token;
   String? role;
-System copyWith({  String? token,
-  String? role,
-}) => System(  token: token ?? this.token,
-  role: role ?? this.role,
-);
+  System copyWith({  String? token,
+    String? role,
+  }) => System(  token: token ?? this.token,
+    role: role ?? this.role,
+  );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['token'] = token;

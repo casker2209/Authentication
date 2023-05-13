@@ -3,12 +3,12 @@ import 'dart:math';
 import 'package:authentication/bloc/create_user_bloc/create_user_bloc.dart';
 import 'package:authentication/bloc/create_user_bloc/create_user_event.dart';
 import 'package:authentication/bloc/create_user_bloc/create_user_state.dart';
-import 'package:authentication/network/get_user.dart';
+import 'package:authentication/network/response/get_user.dart';
 import 'package:authentication/screen/base_bloc_network_widget.dart';
-import 'package:authentication/utils/color.dart';
+import 'package:authentication/utils/color_utils.dart';
 import 'package:authentication/utils/request_permission_utils.dart';
 import 'package:authentication/utils/text_style_utils.dart';
-import 'package:authentication/utils/utils.dart';
+import 'package:authentication/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,14 +55,11 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
           child: Text("Thêm tài khoản"),
         ),
         leadingWidth: 24,
-        leading: Padding(
-          padding: EdgeInsets.fromLTRB(4, 0, 0, 0),
-          child: IconButton(
+        leading: IconButton(
               icon: Icon(Icons.arrow_back,size:24),
               onPressed: () {
                 context.pop();
-              }),
-        ),
+              })
       ),
       backgroundColor: Colors.white,
       body: _CreateUserBlocConsumer(widget.user));
@@ -145,16 +142,16 @@ class _CreateUserWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: canClick
-                      ? UtilsColor.colorGreenPrimary
-                      : UtilsColor.colorLightGrey,
+                      ? ColorUtils.colorGreenPrimary
+                      : ColorUtils.colorLightGrey,
                 ),
                 child: Text(
                   "Thêm",
                   textAlign: TextAlign.center,
-                  style: UtilsTextStyle.robotoTextStyle(
+                  style: TextStyleUtils.robotoTextStyle(
                       color: canClick
                           ? Colors.white
-                          : UtilsColor.colorGreenPrimary,
+                          : ColorUtils.colorGreenPrimary,
                       size: 16),
                 ),
               ),
@@ -170,7 +167,7 @@ class _CreateUserWidget extends StatelessWidget {
       children: [
         Text(
           "Họ tên",
-          style: UtilsTextStyle.primaryTextStyle(
+          style: TextStyleUtils.primaryTextStyle(
               color: Colors.black, family: "Roboto", size: 14),
         ),
         Spacer(),
@@ -181,12 +178,12 @@ class _CreateUserWidget extends StatelessWidget {
             controller: nameController,
             decoration: InputDecoration(
                 hintText: "Họ tên",
-                hintStyle: UtilsTextStyle.primaryTextStyle(
-                    color: UtilsColor.colorGrey2, size: 12),
+                hintStyle: TextStyleUtils.primaryTextStyle(
+                    color: ColorUtils.colorGrey2, size: 12),
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                        color: UtilsColor.colorGreenPrimary, width: 2))),
+                        color: ColorUtils.colorGreenPrimary, width: 2))),
           ),
         ),
         SizedBox(width: 20),
@@ -198,11 +195,11 @@ class _CreateUserWidget extends StatelessWidget {
             height: 40,
             width: 80,
             decoration: BoxDecoration(
-                color: UtilsColor.colorGreenPrimary,
+                color: ColorUtils.colorGreenPrimary,
                 borderRadius: BorderRadius.circular(10)),
             child: Center(
               child: Text("Danh bạ",
-                  style: UtilsTextStyle.primaryTextStyle(
+                  style: TextStyleUtils.primaryTextStyle(
                       color: Colors.white, family: "Roboto", size: 14)),
             ),
           ),
@@ -228,7 +225,7 @@ class _CreateUserWidget extends StatelessWidget {
     return Row(
       children: [
         Text("SĐT",
-            style: UtilsTextStyle.primaryTextStyle(
+            style: TextStyleUtils.primaryTextStyle(
                 color: Colors.black, family: "Roboto", size: 14)),
         Spacer(),
         SizedBox(
@@ -239,12 +236,12 @@ class _CreateUserWidget extends StatelessWidget {
             controller: usernameController,
             decoration: InputDecoration(
                 hintText: "Số điện thoại",
-                hintStyle: UtilsTextStyle.primaryTextStyle(
-                    color: UtilsColor.colorGrey2, size: 12),
+                hintStyle: TextStyleUtils.primaryTextStyle(
+                    color: ColorUtils.colorGrey2, size: 12),
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: BorderSide(
-                        color: UtilsColor.colorGreenPrimary, width: 2))),
+                        color: ColorUtils.colorGreenPrimary, width: 2))),
           ),
         ),
         const SizedBox(width: 20),
@@ -256,11 +253,11 @@ class _CreateUserWidget extends StatelessWidget {
             height: 40,
             width: 80,
             decoration: BoxDecoration(
-                color: UtilsColor.colorGreenPrimary,
+                color: ColorUtils.colorGreenPrimary,
                 borderRadius: BorderRadius.circular(10)),
             child: Center(
               child: Text("Đặt lại",
-                  style: UtilsTextStyle.primaryTextStyle(
+                  style: TextStyleUtils.primaryTextStyle(
                       color: Colors.white, family: "Roboto", size: 14)),
             ),
           ),
@@ -273,7 +270,7 @@ class _CreateUserWidget extends StatelessWidget {
     return Row(
       children: [
         Text("MK",
-            style: UtilsTextStyle.primaryTextStyle(
+            style: TextStyleUtils.primaryTextStyle(
                 color: Colors.black, family: "Roboto", size: 14)),
         Spacer(),
         SizedBox(
@@ -284,12 +281,12 @@ class _CreateUserWidget extends StatelessWidget {
             obscureText: _state.showPassword,
             decoration: InputDecoration(
                 hintText: "Mật khẩu",
-                hintStyle: UtilsTextStyle.primaryTextStyle(
-                    color: UtilsColor.colorGrey2, size: 12),
+                hintStyle: TextStyleUtils.primaryTextStyle(
+                    color: ColorUtils.colorGrey2, size: 12),
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: BorderSide(
-                        color: UtilsColor.colorGreenPrimary, width: 2)),
+                        color: ColorUtils.colorGreenPrimary, width: 2)),
                 suffixIcon: IconButton(
                   icon: Icon(_state.showPassword
                       ? Icons.remove_red_eye_outlined
@@ -303,17 +300,17 @@ class _CreateUserWidget extends StatelessWidget {
         const SizedBox(width: 20),
         InkWell(
           onTap: () {
-            passwordController.text = Utils.randomString();
+            passwordController.text = StringUtils.randomString();
           },
           child: Container(
             height: 40,
             width: 80,
             decoration: BoxDecoration(
-                color: UtilsColor.colorGreenPrimary,
+                color: ColorUtils.colorGreenPrimary,
                 borderRadius: BorderRadius.circular(10)),
             child: Center(
               child: Text("Mặc định",
-                  style: UtilsTextStyle.primaryTextStyle(
+                  style: TextStyleUtils.primaryTextStyle(
                       color: Colors.white, family: "Roboto", size: 14)),
             ),
           ),

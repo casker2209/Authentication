@@ -1,8 +1,9 @@
-import 'package:authentication/bloc/home/home.dart';
+import 'package:authentication/bloc/home/home_bloc.dart';
 import 'package:authentication/bloc/home/home_event.dart';
 import 'package:authentication/bloc/home/home_state.dart';
-import 'package:authentication/network/get_me.dart';
-import 'package:authentication/utils/color.dart';
+import 'package:authentication/network/local/local_data_utils.dart';
+import 'package:authentication/network/response/get_me.dart';
+import 'package:authentication/utils/color_utils.dart';
 import 'package:authentication/utils/shared_preferences_utils.dart';
 import 'package:authentication/utils/text_style_utils.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class Sidebar extends StatelessWidget{
         Container(height: 320,
           child: DrawerHeader(
              decoration: const BoxDecoration(
-              color: UtilsColor.colorGreenPrimary
+              color: ColorUtils.colorGreenPrimary
              ),
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
@@ -32,13 +33,13 @@ class Sidebar extends StatelessWidget{
                   children: [
                     Image.asset("assets/images/icon_white_bubble.png",height: 45,width: 45),
                     SizedBox(width: 18),
-                    Text(response!=null ? response!.name! : "",style: UtilsTextStyle.primaryTextStyle(color: Colors.white,fontWeight: FontWeight.w600,size:16))
+                    Text(response!=null ? response!.name! : "",style: TextStyleUtils.primaryTextStyle(color: Colors.white,fontWeight: FontWeight.w600,size:16))
                   ],
                 ),
               Spacer(),
               InkWell(
                 onTap: (){
-                  SharedPreferencesUtils.clearLogin();
+                  LocalDataUtils.clearLogin();
                   context.go("/authentication");
                 },
                 child: Row(
@@ -46,7 +47,7 @@ class Sidebar extends StatelessWidget{
                   children: [
                     Icon(Icons.logout_outlined,size: 20),
                     SizedBox(width: 35),
-                    Text("Đăng xuất",style: UtilsTextStyle.primaryTextStyle(color: Colors.white,fontWeight: FontWeight.w500,size:14))
+                    Text("Đăng xuất",style: TextStyleUtils.primaryTextStyle(color: Colors.white,fontWeight: FontWeight.w500,size:14))
                   ],
                 ),
               ),
@@ -75,12 +76,12 @@ class Sidebar extends StatelessWidget{
         BlocProvider.of<HomeBloc>(blocContext).add(IndexChangedEvent(index));
       },
       child: Container(padding: EdgeInsets.symmetric(vertical: 12,horizontal: 20),
-      color: state.index != index ? Colors.white : UtilsColor.colorLightGrey,
+      color: state.index != index ? Colors.white : ColorUtils.colorLightGrey,
       child: Row(
         children: [
-          Icon(icon,size: 16,color: state.index != index ? Colors.black : UtilsColor.colorGreenPrimary,),
+          Icon(icon,size: 16,color: state.index != index ? Colors.black : ColorUtils.colorGreenPrimary,),
           SizedBox(width: 35),
-          Text(text,style: UtilsTextStyle.primaryTextStyle(color: state.index != index ? UtilsColor.colorGrey3 : UtilsColor.colorGreenPrimary,))
+          Text(text,style: TextStyleUtils.primaryTextStyle(color: state.index != index ? ColorUtils.colorGrey3 : ColorUtils.colorGreenPrimary,))
         ],
       ),
       ),

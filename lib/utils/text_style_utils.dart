@@ -1,6 +1,6 @@
 import 'package:flutter/painting.dart';
 
-class UtilsTextStyle{
+class TextStyleUtils{
    static TextStyle primaryTextStyle({double size = 16,double? height,required Color color,FontWeight? fontWeight,String? family}){
     return TextStyle(
       color: color,

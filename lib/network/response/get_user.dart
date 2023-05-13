@@ -1,6 +1,5 @@
 
-import 'package:authentication/network/get_user.dart';
-import 'package:authentication/network/response.dart';
+import 'package:authentication/network/response/response.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 

@@ -1,7 +1,7 @@
 import 'package:authentication/bloc/base/base_state.dart';
 import 'package:authentication/bloc/network/network_state.dart';
-import 'package:authentication/network/login.dart';
-import 'package:authentication/network/response.dart';
+import 'package:authentication/network/response/login_response.dart';
+import 'package:authentication/network/response/response.dart';
 
 class AuthenticationState extends NetworkState<SignInResponse>{
   AuthenticationState({

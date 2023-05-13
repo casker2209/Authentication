@@ -1,6 +1,5 @@
 import 'package:authentication/bloc/authentication/authentication_event.dart';
 import 'package:authentication/bloc/authentication/authentication_state.dart';
-import 'package:authentication/network/login.dart';
 import 'package:authentication/screen/base_bloc_network_widget.dart';
 import 'package:authentication/utils/go_router.dart';
 import 'package:authentication/utils/text_style_utils.dart';
@@ -12,7 +11,7 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../bloc/authentication/authentication_bloc.dart';
-import '../../utils/color.dart';
+import '../../utils/color_utils.dart';
 
 class AuthenticationScreen extends StatelessWidget {
   @override
@@ -39,8 +38,8 @@ class AuthenticationScreen extends StatelessWidget {
                   child: Text(
                     "Smart Message",
                     textAlign: TextAlign.center,
-                    style: UtilsTextStyle.primaryTextStyle(
-                        color: UtilsColor.colorGreenPrimary,
+                    style: TextStyleUtils.primaryTextStyle(
+                        color: ColorUtils.colorGreenPrimary,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -48,8 +47,8 @@ class AuthenticationScreen extends StatelessWidget {
                 Text(
                   "Xin Chào",
                   textAlign: TextAlign.start,
-                  style: UtilsTextStyle.primaryTextStyle(
-                    color: UtilsColor.colorGreenPrimary,
+                  style: TextStyleUtils.primaryTextStyle(
+                    color: ColorUtils.colorGreenPrimary,
                     size: 26,
                     fontWeight: FontWeight.bold,
                   ),
@@ -58,8 +57,8 @@ class AuthenticationScreen extends StatelessWidget {
                 Text(
                   "Đăng nhập để tiếp tục",
                   textAlign: TextAlign.start,
-                  style: UtilsTextStyle.primaryTextStyle(
-                    color: UtilsColor.colorGreenPrimary,
+                  style: TextStyleUtils.primaryTextStyle(
+                    color: ColorUtils.colorGreenPrimary,
                     fontWeight: FontWeight.w500,
                     size: 19,
                   ),
@@ -89,12 +88,12 @@ class _AuthenticationForm extends StatelessWidget {
           },
           keyboardType:TextInputType.phone,
           style:
-          UtilsTextStyle.primaryTextStyle(color: Colors.black, size: 14),
+          TextStyleUtils.primaryTextStyle(color: Colors.black, size: 14),
           decoration: InputDecoration(
               hintText: "Số điện thoại",
-              hintStyle: UtilsTextStyle.primaryTextStyle(
-                  color: UtilsColor.colorGrey, size: 14),
-              fillColor: UtilsColor.colorLightGrey,
+              hintStyle: TextStyleUtils.primaryTextStyle(
+                  color: ColorUtils.colorGrey, size: 14),
+              fillColor: ColorUtils.colorLightGrey,
               filled: true,
               contentPadding:
               const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -113,13 +112,13 @@ class _AuthenticationForm extends StatelessWidget {
                 .add(PasswordChanged(text));
           },
           style:
-          UtilsTextStyle.primaryTextStyle(color: Colors.black, size: 14),
+          TextStyleUtils.primaryTextStyle(color: Colors.black, size: 14),
           decoration: InputDecoration(
               isDense: true,
               hintText: "Mật khẩu",
-              hintStyle: UtilsTextStyle.primaryTextStyle(
-                  color: UtilsColor.colorGrey, size: 14),
-              fillColor: UtilsColor.colorLightGrey,
+              hintStyle: TextStyleUtils.primaryTextStyle(
+                  color: ColorUtils.colorGrey, size: 14),
+              fillColor: ColorUtils.colorLightGrey,
               filled: true,
               contentPadding:
               const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -144,24 +143,24 @@ class _AuthenticationForm extends StatelessWidget {
                   side: BorderSide(
                       width: 1,
                       color: !state.rememberPassword
-                          ? UtilsColor.colorLightGreen
+                          ? ColorUtils.colorLightGreen
                           : Theme.of(context).disabledColor)),
             ),
             child: CheckboxListTile(
                 controlAffinity: ListTileControlAffinity.leading,
                 dense: true,
-                activeColor: UtilsColor.colorGreenPrimary,
-                checkColor: UtilsColor.colorLightGrey,
+                activeColor: ColorUtils.colorGreenPrimary,
+                checkColor: ColorUtils.colorLightGrey,
                 checkboxShape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                     side: BorderSide(
-                        color: UtilsColor.colorLightGrey, width: 1)),
+                        color: ColorUtils.colorLightGrey, width: 1)),
                 visualDensity: VisualDensity(horizontal: -4, vertical: -4),
                 contentPadding: EdgeInsets.zero,
                 title: Text(
                   "Nhớ mật khẩu",
-                  style: UtilsTextStyle.primaryTextStyle(
-                      color: UtilsColor.colorGrey, size: 14),
+                  style: TextStyleUtils.primaryTextStyle(
+                      color: ColorUtils.colorGrey, size: 14),
                 ),
                 value: state.rememberPassword,
                 onChanged: (onChanged) {
@@ -178,7 +177,7 @@ class _AuthenticationForm extends StatelessWidget {
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0))),
               backgroundColor: TextButton.styleFrom(
-                  backgroundColor: state.canLogin ? UtilsColor.colorGreenPrimary : UtilsColor.colorLightGrey)
+                  backgroundColor: state.canLogin ? ColorUtils.colorGreenPrimary : ColorUtils.colorLightGrey)
                   .backgroundColor),
           onPressed: state.canLogin
               ? () {
@@ -191,8 +190,8 @@ class _AuthenticationForm extends StatelessWidget {
             child: Text(
               "Đăng nhập",
               textAlign: TextAlign.center,
-              style: UtilsTextStyle.primaryTextStyle(
-                  color: state.canLogin ? Colors.white : UtilsColor.colorGreenPrimary, fontWeight: FontWeight.w500),
+              style: TextStyleUtils.primaryTextStyle(
+                  color: state.canLogin ? Colors.white : ColorUtils.colorGreenPrimary, fontWeight: FontWeight.w500),
             ),
           ),
         )

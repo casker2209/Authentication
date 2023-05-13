@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
-class NetworkBlocConsumer<B extends BaseBloc,S extends NetworkState> extends StatelessWidget{
+class NetworkBlocConsumer<B extends NetworkBloc,S extends NetworkState> extends StatelessWidget{
   Function? onSuccess;
   Function? onError;
   BuildContext blocContext;
@@ -16,10 +16,10 @@ class NetworkBlocConsumer<B extends BaseBloc,S extends NetworkState> extends Sta
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<StateStreamable<S>,S>(builder:
-    (blocContext,state){
+    (_,state){
      return child;
     }, listener:
-    (blocContext,state){
+    (_,state){
       NetworkHelper.networkListener(blocContext, state,onSuccess: onSuccess,onError: onError);
     },
     buildWhen: (state1,state2) => state1.loading != state2.loading,
@@ -46,6 +46,9 @@ class NetworkHelper{
         }
       }
     }
+  }
+  static bool networkListenerCondition(NetworkState previous,NetworkState current){
+    return previous.loading != current.loading;
   }
   static Widget networkBuilder(context,NetworkState state,{Widget? loadingWidget,Widget? errorWidget,required Widget widget}){
     if(state.loading && loadingWidget!=null) return loadingWidget!;

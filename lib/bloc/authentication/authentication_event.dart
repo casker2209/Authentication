@@ -1,5 +1,8 @@
 
-class AuthenticationEvent{}
+import 'package:authentication/bloc/base/base_event.dart';
+import 'package:authentication/bloc/network/network_event.dart';
+
+class AuthenticationEvent extends NetworkEvent{}
 
 class LoginButtonPressed extends AuthenticationEvent{
 }

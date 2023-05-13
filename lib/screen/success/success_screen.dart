@@ -1,4 +1,4 @@
-import 'package:authentication/utils/color.dart';
+import 'package:authentication/utils/color_utils.dart';
 import 'package:authentication/utils/text_style_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -32,12 +32,12 @@ class SuccessScreen extends StatelessWidget{
                   SizedBox(height:10),
                   Text("Thành Công!",
                       textAlign: TextAlign.center,
-                      style:UtilsTextStyle.primaryTextStyle(color: UtilsColor.colorGreenPrimary,fontWeight: FontWeight.w700,size: 32)),
+                      style:TextStyleUtils.primaryTextStyle(color: ColorUtils.colorGreenPrimary,fontWeight: FontWeight.w700,size: 32)),
                   SizedBox(height:10),
                   Text(
                       isCreate?
                       "Chúc mừng bạn đã đăng ký thành công tài khoản trên ứng dụng di động.":
-                      "Sửa thông tin thành công tài khoản trên ứng dụng di động.",style:UtilsTextStyle.primaryTextStyle(color: Colors.black,fontWeight: FontWeight.w500,size: 18)),
+                      "Sửa thông tin thành công tài khoản trên ứng dụng di động.",style:TextStyleUtils.primaryTextStyle(color: Colors.black,fontWeight: FontWeight.w500,size: 18)),
                   SizedBox(height:50),
                   InkWell(
                     onTap: (){
@@ -48,11 +48,11 @@ class SuccessScreen extends StatelessWidget{
                         padding: EdgeInsets.symmetric(vertical: 15),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(18),
-                          color: UtilsColor.colorGreenPrimary
+                          color: ColorUtils.colorGreenPrimary
                         ),
                         child: Text("Hoàn thành",
                             textAlign: TextAlign.center,
-                            style:UtilsTextStyle.primaryTextStyle(color: Colors.white,fontWeight: FontWeight.w600,size: 18))),
+                            style:TextStyleUtils.primaryTextStyle(color: Colors.white,fontWeight: FontWeight.w600,size: 18))),
                   )
                 ],
               ),

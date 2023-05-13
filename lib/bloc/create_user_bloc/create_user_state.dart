@@ -1,7 +1,7 @@
 import 'package:authentication/bloc/base/base_state.dart';
 import 'package:authentication/bloc/network/network_state.dart';
-import 'package:authentication/network/get_user.dart';
-import 'package:authentication/network/response.dart';
+import 'package:authentication/network/response/get_user.dart';
+import 'package:authentication/network/response/response.dart';
 class CreateUserState extends NetworkState<BaseResponse> {
   bool showPassword;
   bool canClick;

@@ -1,8 +1,9 @@
 import 'package:authentication/firebase_options.dart';
-import 'package:authentication/network/rest_client.dart';
+import 'package:authentication/network/network/base_options_utils.dart';
+import 'package:authentication/network/network/rest_client.dart';
 import 'package:authentication/screen/login/authentication_screen.dart';
-import 'package:authentication/utils/color.dart';
-import 'package:authentication/utils/firebase_messaging_utils.dart';
+import 'package:authentication/utils/color_utils.dart';
+import 'package:authentication/service/firebase_service.dart.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -24,14 +25,7 @@ late GoRouter router;
 void setup() async{
   final getIt = GetIt.instance;
   getIt.registerLazySingleton<RestClient>(() => RestClient(Dio(
-    BaseOptions(
-        headers: {
-          'content-Type':'application/json',
-          'Accept':'*/*'
-        },
-      connectTimeout: const Duration(seconds: 60),
-      sendTimeout: const Duration(seconds: 60)
-    ),
+    BaseOptionsUtils.defaultBaseOptions
   )..interceptors.addAll([
     PrettyDioLogger(requestHeader: true,
         requestBody: true,
@@ -51,7 +45,7 @@ void setup() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseUtils.setup();
+  FirebaseService.setup();
 }
 
 class MyApp extends StatelessWidget {
@@ -63,13 +57,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: router,
       theme: ThemeData(
-        colorScheme: Theme.of(context).colorScheme.copyWith(primary: UtilsColor.colorGreenPrimary)
+        colorScheme: Theme.of(context).colorScheme.copyWith(primary: ColorUtils.colorGreenPrimary)
       ),
     );
   }
 }
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  FirebaseUtils.handleMessage(message);
+  FirebaseService.handleMessage(message);
 }
 

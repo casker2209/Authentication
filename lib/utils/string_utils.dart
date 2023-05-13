@@ -1,6 +1,6 @@
 import 'dart:math';
 
-class Utils{
+class StringUtils{
   static String randomString() {
     const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
     Random _rnd = Random();

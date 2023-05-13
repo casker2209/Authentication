@@ -1,12 +1,10 @@
-import 'package:authentication/network/response.dart';
-import 'package:authentication/network/rest_client.dart';
+import 'package:authentication/network/response/response.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 class BaseBloc<BaseEvent,BaseState> extends Bloc<BaseEvent,BaseState>{
-  RestClient client = GetIt.instance<RestClient>();
   BaseBloc(V) : super(V);
 
   String handlingError(Object error,StackTrace stacktrace) {

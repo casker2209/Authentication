@@ -2,10 +2,10 @@ import 'package:authentication/bloc/base/base_bloc.dart';
 import 'package:authentication/bloc/change_password/change_password_event.dart';
 import 'package:authentication/bloc/change_password/change_password_state.dart';
 import 'package:authentication/bloc/network/network_bloc.dart';
-import 'package:authentication/network/change_password.dart';
-import 'package:authentication/network/response.dart';
+import 'package:authentication/network/request/change_password.dart';
+import 'package:authentication/network/response/response.dart';
 
-class ChangePasswordBloc extends BaseBloc<ChangePasswordEvent,ChangePasswordState>{
+class ChangePasswordBloc extends NetworkBloc<ChangePasswordEvent,ChangePasswordState>{
   ChangePasswordBloc():super(ChangePasswordState(message: '', success: false, loading: false)){
     on<ChangePasswordEvent>((event,emit) async{
       if(event is CheckShowOldPassword){

@@ -1,10 +1,9 @@
 import 'package:authentication/bloc/account_list/account_list_bloc.dart';
 import 'package:authentication/bloc/account_list/account_list_event.dart';
 import 'package:authentication/bloc/account_list/account_list_state.dart';
-import 'package:authentication/network/get_user.dart';
-import 'package:authentication/network/login.dart';
+import 'package:authentication/network/response/get_user.dart';
 import 'package:authentication/screen/base_bloc_network_widget.dart';
-import 'package:authentication/utils/color.dart';
+import 'package:authentication/utils/color_utils.dart';
 import 'package:authentication/utils/refreshable_widget.dart';
 import 'package:authentication/utils/text_style_utils.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +86,7 @@ class _AccountListWidget extends StatelessWidget {
       },
       child: BlocConsumer<AccountListBloc, AccountListState>(
         builder: (context, state) => Container(
-            decoration: BoxDecoration(color: UtilsColor.colorLightGrey),
+            decoration: const BoxDecoration(color: ColorUtils.colorLightGrey),
             height: double.infinity,
             width: double.infinity,
             child: bloc.state.success && bloc.state.response! is GetUserResponse
@@ -104,9 +103,7 @@ class _AccountListWidget extends StatelessWidget {
         listener: (context, state) {
           NetworkHelper.networkListener(context, state, onSuccess: () {});
         },
-        listenWhen: (state1, state2) {
-          return state1.loading != state2.loading;
-        },
+        listenWhen: NetworkHelper.networkListenerCondition
       ),
     );
   }
@@ -192,14 +189,14 @@ class _AccountStatus extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(user.name!,
-                      style: UtilsTextStyle.primaryTextStyle(
+                      style: TextStyleUtils.primaryTextStyle(
                           color: Colors.black,
                           size: 18,
                           fontWeight: FontWeight.w600)),
                   SizedBox(height: 6),
                   Text("Phone: ${user.username}",
-                      style: UtilsTextStyle.primaryTextStyle(
-                          color: UtilsColor.colorDarkGrey,
+                      style: TextStyleUtils.primaryTextStyle(
+                          color: ColorUtils.colorDarkGrey,
                           size: 13,
                           fontWeight: FontWeight.w500))
                 ]),
@@ -223,7 +220,7 @@ class _AccountStatus extends StatelessWidget {
               width: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12.5),
               child: Text("Xóa",
-                  style: UtilsTextStyle.robotoTextStyle(color: Colors.black)),
+                  style: TextStyleUtils.robotoTextStyle(color: Colors.black)),
             ),
           )
         : user.status == status
@@ -239,7 +236,7 @@ class _AccountStatus extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12.5),
                   child: Text(
                     "Đổi trạng thái sang ${status.toLowerCase()}",
-                    style: UtilsTextStyle.robotoTextStyle(color: Colors.black),
+                    style: TextStyleUtils.robotoTextStyle(color: Colors.black),
                   ),
                 ),
               );

@@ -2,20 +2,19 @@ import 'package:authentication/bloc/account_list/account_list_bloc.dart';
 import 'package:authentication/bloc/account_list/account_list_event.dart';
 import 'package:authentication/bloc/account_list/account_list_state.dart';
 import 'package:authentication/bloc/base/base_bloc.dart';
-import 'package:authentication/network/response.dart';
-import 'package:authentication/network/rest_client.dart';
-import 'package:authentication/network/update_user.dart';
+import 'package:authentication/bloc/network/network_bloc.dart';
+import 'package:authentication/network/request/update_user.dart';
+import 'package:authentication/network/response/get_user.dart';
+import 'package:authentication/network/response/response.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:authentication/network/get_user.dart';
 import 'package:get_it/get_it.dart';
-class AccountListBloc extends BaseBloc<AccountListEvent,AccountListState>{
+class AccountListBloc extends NetworkBloc<AccountListEvent,AccountListState>{
   AccountListBloc():super(AccountListState()) {
     on<AccountListEvent>((event,emit) async {
       if(event is GetUserEvent) {
-        RestClient restClient = GetIt.instance<RestClient>();
         try {
           emit(state.copyWith(loading: true));
-          GetUserResponse response = await restClient.getUser();
+          GetUserResponse response = await client.getUser();
           emit(state.copyWith(
               loading: false, success: true, response: response,users:response.data));
         }
@@ -44,7 +43,7 @@ class AccountListBloc extends BaseBloc<AccountListEvent,AccountListState>{
   }
 }
 
-class UpdateRemoveUserBloc extends BaseBloc<UpdateRemoveEvent,UpdateRemoveState>{
+class UpdateRemoveUserBloc extends NetworkBloc<UpdateRemoveEvent,UpdateRemoveState>{
   UpdateRemoveUserBloc():super(UpdateRemoveState(index: -1)){
     on<UpdateRemoveEvent>((event,emit) async{
       if(event is UpdateUserEvent){

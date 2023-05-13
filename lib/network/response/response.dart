@@ -1,4 +1,3 @@
-import 'package:authentication/network/response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'response.g.dart';
 @JsonSerializable()

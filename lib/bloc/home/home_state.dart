@@ -1,5 +1,5 @@
 import 'package:authentication/bloc/base/base_state.dart';
-import 'package:authentication/network/get_me.dart';
+import 'package:authentication/network/response/get_me.dart';
 
 class HomeState extends BaseState{
   HomeState({this.response,required this.index});

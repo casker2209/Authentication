@@ -1,18 +1,19 @@
 import 'dart:async';
 
-import 'package:authentication/network/change_password.dart';
-import 'package:authentication/network/create_user.dart';
-import 'package:authentication/network/get_user.dart';
-import 'package:authentication/network/response.dart';
-import 'package:authentication/network/update_user.dart';
+import 'package:authentication/network/request/change_password.dart';
+import 'package:authentication/network/request/create_user.dart';
+import 'package:authentication/network/request/update_user.dart';
+import 'package:authentication/network/response/get_user.dart';
+import 'package:authentication/network/response/login_response.dart';
+import 'package:authentication/network/response/response.dart';
 import 'package:authentication/utils/shared_preferences_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:retrofit/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'login.dart';
-import 'get_me.dart';
+import '../request/login.dart';
+import '../response/get_me.dart';
 
 part 'rest_client.g.dart';
 

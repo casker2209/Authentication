@@ -2,7 +2,7 @@ import 'package:authentication/bloc/change_password/change_password_bloc.dart';
 import 'package:authentication/bloc/change_password/change_password_event.dart';
 import 'package:authentication/bloc/change_password/change_password_state.dart';
 import 'package:authentication/screen/base_bloc_network_widget.dart';
-import 'package:authentication/utils/color.dart';
+import 'package:authentication/utils/color_utils.dart';
 import 'package:authentication/utils/dialog_utils.dart';
 import 'package:authentication/utils/refreshable_widget.dart';
 import 'package:authentication/utils/text_style_utils.dart';
@@ -17,7 +17,7 @@ class ChangePasswordScreen extends RefreshWidget{
     return _ChangePasswordBlocConsumer();
     return Scaffold(
       appBar:AppBar(
-        title: Text("Đổi mật khẩu",style: UtilsTextStyle.primaryTextStyle(color: Colors.white,size: 20),),
+        title: Text("Đổi mật khẩu",style: TextStyleUtils.primaryTextStyle(color: Colors.white,size: 20),),
         leadingWidth: 24,
         leading: Padding(
           padding: EdgeInsets.fromLTRB(4, 0, 0, 0),
@@ -101,17 +101,17 @@ late TextEditingController confirmedPasswordController;
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Mật khẩu cũ",
-                        style: UtilsTextStyle.primaryTextStyle(
+                        style: TextStyleUtils.primaryTextStyle(
                             height:24/14,
                             color: Colors.black, family: "Roboto", size: 14)),
                     SizedBox(height: 24),
                     Text("Mật khẩu mới",
-                        style: UtilsTextStyle.primaryTextStyle(
+                        style: TextStyleUtils.primaryTextStyle(
                             height:24/14,
                             color: Colors.black, family: "Roboto", size: 14)),
                     SizedBox(height:24),
                     Text("Xác nhận mật khẩu",
-                        style: UtilsTextStyle.primaryTextStyle(
+                        style: TextStyleUtils.primaryTextStyle(
                             height:24/14,
                             color: Colors.black, family: "Roboto", size: 14)),
                 ]),
@@ -143,15 +143,15 @@ late TextEditingController confirmedPasswordController;
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: widget.state.canClick
-              ? UtilsColor.colorGreenPrimary
-              : UtilsColor.colorLightGrey,
+              ? ColorUtils.colorGreenPrimary
+              : ColorUtils.colorLightGrey,
         ),
         child: Text("Lưu",
           textAlign: TextAlign.center,
-          style: UtilsTextStyle.robotoTextStyle(
+          style: TextStyleUtils.robotoTextStyle(
               color: widget.state.canClick
                   ? Colors.white
-                  : UtilsColor.colorGreenPrimary,
+                  : ColorUtils.colorGreenPrimary,
               size: 16))))
         ],
       ),

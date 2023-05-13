@@ -1,7 +1,7 @@
 import 'package:authentication/bloc/widget/text_field/text_field_bloc.dart';
 import 'package:authentication/bloc/widget/text_field/text_field_event.dart';
 import 'package:authentication/bloc/widget/text_field/text_field_state.dart';
-import 'package:authentication/utils/color.dart';
+import 'package:authentication/utils/color_utils.dart';
 import 'package:authentication/utils/text_style_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -17,7 +17,7 @@ class BlocTextField extends StatefulWidget{
   InputBorder? inputBorder;
 
 
-  BlocTextField({required this.textEditingController,required this.hintText,this.size = 14,this.color = Colors.black,this.hintColor = UtilsColor.colorGrey,this.fillColor,this.inputBorder});
+  BlocTextField({required this.textEditingController,required this.hintText,this.size = 14,this.color = Colors.black,this.hintColor = ColorUtils.colorGrey,this.fillColor,this.inputBorder});
   @override
   State<StatefulWidget> createState() => _BlocTextFieldState();
 
@@ -34,12 +34,12 @@ class _BlocTextFieldState extends State<BlocTextField>{
             obscureText: !state.showPassword,
             controller: widget.textEditingController,
             style:
-            UtilsTextStyle.primaryTextStyle(color: widget.color, size: widget.size),
+            TextStyleUtils.primaryTextStyle(color: widget.color, size: widget.size),
             decoration: InputDecoration(
                 isDense: true,
                 contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                 hintText: "Mật khẩu",
-                hintStyle: UtilsTextStyle.primaryTextStyle(
+                hintStyle: TextStyleUtils.primaryTextStyle(
                     color: widget.hintColor, size: 12),
                 fillColor: widget.fillColor,
 
@@ -54,7 +54,7 @@ class _BlocTextFieldState extends State<BlocTextField>{
                 border: widget.inputBorder ??  OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
               borderSide: const BorderSide(
-                  color: UtilsColor.colorGreenPrimary, width: 2))),
+                  color: ColorUtils.colorGreenPrimary, width: 2))),
           ),
         );
       },

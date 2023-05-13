@@ -2,7 +2,10 @@ import 'package:authentication/bloc/authentication/authentication_bloc.dart';
 import 'package:authentication/bloc/authentication/authentication_event.dart';
 import 'package:authentication/bloc/authentication/authentication_state.dart';
 import 'package:authentication/bloc/base/base_bloc.dart';
-import 'package:authentication/network/get_me.dart';
+import 'package:authentication/bloc/network/network_bloc.dart';
+import 'package:authentication/network/local/local_data_utils.dart';
+import 'package:authentication/network/response/get_me.dart';
+import 'package:authentication/network/response/login_response.dart';
 import 'package:authentication/utils/shared_preferences_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
@@ -11,18 +14,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../network/login.dart';
-import '../../network/response.dart';
-import '../../network/rest_client.dart';
+import '../../network/request/login.dart';
+import '../../network/response/response.dart';
+import '../../network/network/rest_client.dart';
 
-class AuthenticationBloc extends BaseBloc<AuthenticationEvent,AuthenticationState>{
+class AuthenticationBloc extends NetworkBloc<AuthenticationEvent,AuthenticationState>{
   AuthenticationBloc():super(AuthenticationState(username: '', password: '', showPassword: false, rememberPassword: false, loading: false,success: false, message: '')){
     on<AuthenticationEvent>((event,emit){
       if(event is ShowPassword){
         emit(state.copyWith(showPassword: event.onChanged));
       }
       if(event is GetPasswordEvent){
-        String password =  SharedPreferencesUtils.instance.getString(SharedPreferencesKey.PASSWORD) ?? '';
+        String password =  LocalDataUtils.instance.getString(SharedPreferencesKey.PASSWORD) ?? '';
         emit(state.copyWith(password: password,rememberPassword: password.isNotEmpty));
       }
       if(event is UsernameChanged){
@@ -48,9 +51,8 @@ class AuthenticationBloc extends BaseBloc<AuthenticationEvent,AuthenticationStat
         message = handlingError(error, stacktrace);
       }
       if(success){
-        //emit(state.copyWith(response: response,loading:false,success: true));
-        SharedPreferencesUtils.saveInformationLogin(response);
-        if(state.rememberPassword) SharedPreferencesUtils.savePassword(state.password);
+        LocalDataUtils.saveInformationLogin(response);
+        if(state.rememberPassword) LocalDataUtils.savePassword(state.password);
         _getMe(response);
       }
       else{
@@ -62,14 +64,15 @@ class AuthenticationBloc extends BaseBloc<AuthenticationEvent,AuthenticationStat
 
 
   void _getMe(SignInResponse response) async{
-    GetMeResponse response = await client.getMe();
-    String message;
     try{
+      GetMeResponse response = await client.getMe();
+      LocalDataUtils.saveInformationGetMe(response);
       emit(state.copyWith(success: true,loading: false));
     }
     catch(error,stacktrace){
       debugPrintStack(stackTrace: stacktrace);
-      handlingError(error, stacktrace);
+      String message = handlingError(error, stacktrace);
+      emit(state.copyWith(success:false,message: message));
     }
   }
 }

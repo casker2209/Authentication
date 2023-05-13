@@ -1,4 +1,5 @@
-import 'package:authentication/network/get_user.dart';
+import 'package:authentication/network/local/local_data_utils.dart';
+import 'package:authentication/network/response/get_user.dart';
 import 'package:authentication/screen/account_list/account_list_screen.dart';
 import 'package:authentication/screen/create_user/create_user_screen.dart';
 import 'package:authentication/screen/login/authentication_screen.dart';
@@ -80,7 +81,7 @@ class GoRouterUtils {
     builder:(context,state) => SplashScreen()
     )
     ],
-    initialLocation:await SharedPreferencesUtils.loggedIn() ? "/splash" : "/authentication"
+    initialLocation:await LocalDataUtils.loggedIn() ? "/splash" : "/authentication"
     //"/create"
      );
   }

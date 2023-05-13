@@ -6,7 +6,7 @@ import 'package:authentication/network/local/local_data_utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-class FirebaseUtils{
+class FirebaseService{
   static void setup() async{
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     final fcmToken = await FirebaseMessaging.instance.getToken();
@@ -48,7 +48,7 @@ class FirebaseUtils{
     if(message.data['type'] == "logout"){
       DialogUtils.showButtonDialog(
           title:"Test message, vui lòng đăng nhập lại",
-      onClick: signOut
+          onClick: signOut
       );
     }
   }
@@ -60,7 +60,7 @@ class FirebaseUtils{
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  FirebaseUtils.handleMessageBackground(message);
+  FirebaseService.handleMessageBackground(message);
 }
 
 
